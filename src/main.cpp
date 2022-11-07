@@ -8,8 +8,8 @@ bool driving;
 double flywheel_speed;
 double target_speed;
 
-bool r;
-bool l;
+bool r = true;
+bool l = false;
 
 bool selected;
 int program;
@@ -28,6 +28,7 @@ void initialize() {}
  * the robot is enabled, this task will exit.
  */
 void disabled() {
+	run_selector();
 }
 
 /**
@@ -55,17 +56,21 @@ void competition_initialize() {
  * from where it left off.
  */
 void autonomous() {
-	bool auton = true; //false is left, true is right
+	int auton = 4; //false is left, true is right
 
 	bool driving = false;
-	//pros::Task flywheel_auton(flywheel_task);
 
-	if (auton) {
+	clear_screen();
+	pros::Task flywheel_auton(flywheel_task);
+
+	if (auton == 0 || auton == 2) {
 		right_auton();
-	} else {
+	} else if (auton == 1 || auton == 3) {
 		left_auton();
+	} else if (auton == 4) {
+		skills();
 	}
-	//flywheel_auton.suspend();
+	flywheel_auton.suspend();
 }
 
 /**

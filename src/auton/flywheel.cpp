@@ -8,14 +8,14 @@ void shoot(int count) {
 	pros::ADIPort indexer('A', pros::E_ADI_DIGITAL_OUT);
 	double shot_1, shot_2, shot_3;
 	for (int i = 0; i < count; i++) {
-		while (abs(flywheel_speed - target_speed) > 3) {
+		while (fabs(flywheel_speed - target_speed) > 0.3) {
 			pros::delay(1);
 			pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 4, "flywheel error: %f", abs(flywheel_speed - target_speed));
 		}
 		indexer.set_value(true);
 		pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 5 + i, "shot: %f", abs(flywheel_speed));
 
-		pros::delay(50);
+		pros::delay(200);
 		indexer.set_value(false);
 		pros::delay(400);
 	}

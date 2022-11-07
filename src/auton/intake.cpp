@@ -16,7 +16,7 @@ void pressure(double time, double speed) {
 	right.moveVoltage(-speed * 120);
 
 	for (int i = 0; i < time / 10; i++) {
-		intake.moveVoltage(12000);
+		intake.moveVoltage(-12000);
 		pros::delay(10);
 	}
 

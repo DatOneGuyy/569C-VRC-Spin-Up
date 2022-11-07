@@ -21,8 +21,8 @@ void turn_right(double angle, double slew_rate, double threshold, double timeout
 
 	double error = angle;
 	double power = 0;
-	double kp = fmax(fmin(angle / 40, 3), 0.6);//reducing '40' makes higher speed
-	double kd = 0;
+	double kp = fmax(fmin(angle / 70, 1.6), 0.6);//reducing '40' makes higher speed
+	double kd = 0.3;
 	double past_error = 0;
 
 	int slew_count = 0;
@@ -42,6 +42,10 @@ void turn_right(double angle, double slew_rate, double threshold, double timeout
 
 		slew_count++;
 		past_error = error;
+
+		if (fabs(error) < 50 && fabs(power) < 4) {
+			break;
+		}
 
 		pros::delay(step);
 	}
@@ -65,9 +69,9 @@ void turn_left(double angle, double slew_rate, double threshold, double timeout)
 
 	double error = angle;
 	double power = 0;
-	double kp = fmax(fmin(angle / 40, 3), 0.6);
+	double kp = fmax(fmin(angle / 70, 1.6), 0.6);
 	double past_error = 0;
-	double kd = 0;
+	double kd = 0.3;
 
 	int slew_count = 0;
 	int step = 2;
@@ -85,6 +89,10 @@ void turn_left(double angle, double slew_rate, double threshold, double timeout)
 		slew_count++;
 		past_error = error;
 
+		if (fabs(error) < 50 && fabs(power) < 4) {
+			break;
+		}
+
 		pros::delay(step);
 	}
 
@@ -92,7 +100,7 @@ void turn_left(double angle, double slew_rate, double threshold, double timeout)
 	right.moveVoltage(0);
 }
 
-void turn(double angle, bool direction, double p, double d, double slew_rate, double threshold, double timeout) {
+void turn(double angle, bool direction, double slew_rate, double threshold, double timeout) {
 	if (direction) {
 		turn_right(angle, slew_rate, threshold, timeout);
 	} else {
@@ -102,5 +110,10 @@ void turn(double angle, bool direction, double p, double d, double slew_rate, do
 
 void point_right(double distance) {
 	MotorGroup right({10, 18, 19});
-	right.moveRelative(distance, 70);
+	right.tarePosition();
+	while (fabs(right.getPosition()) < fabs(distance)) {
+		right.moveVelocity(80 * sign(distance));
+		pros::delay(10);
+	}
+	right.moveVelocity(0);
 }

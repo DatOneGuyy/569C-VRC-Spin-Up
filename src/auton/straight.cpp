@@ -44,6 +44,10 @@ void forward(double distance, double p, double g, double slew_rate, double thres
 		}
 		slew_count++;
 
+		if (error < 50 && power < 4) {
+			break;
+		}
+
 		pros::delay(step);
 	}
 
@@ -90,6 +94,10 @@ void backward(double distance, double p, double g, double slew_rate, double thre
 		}
 		slew_count++;
 
+		if (fabs(error) < 50 && fabs(power) < 4) {
+			break;
+		}
+
 		pros::delay(step);
 	}
 
@@ -103,4 +111,12 @@ void drive(double distance, double p, double g, double slew_rate, double thresho
 	} else {
 		backward(-distance, p, g, slew_rate, threshold, timeout);
 	}
+}
+
+void small(double distance) {
+	MotorGroup left({-3, -11, -12});
+	MotorGroup right({10, 18, 19});
+
+	left.moveRelative(distance, 60);
+	right.moveRelative(distance, 60);
 }

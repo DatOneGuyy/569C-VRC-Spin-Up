@@ -11,7 +11,7 @@ void intake_task(void*) {
 	OpticalSensor optical(14);
 	bool active = false;
 
-	while (true) {
+	while (true && driving) {
 		if (R1.changedToPressed()) {
 			active = !active;
 		}

@@ -42,3 +42,11 @@ double slew(double rate, int count, double target, double base) {
 		return target;
 	}
 }
+
+double sign(double x) {
+  if (x == 0) {
+    return 0;
+  } else {
+    return fabs(x) / x;
+  }
+}

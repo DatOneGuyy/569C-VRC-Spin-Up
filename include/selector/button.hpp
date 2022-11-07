@@ -12,4 +12,5 @@ class Button {
 
         void draw();
         void test_click();
+        void display_selected();
 };
