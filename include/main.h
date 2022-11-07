@@ -46,11 +46,15 @@
 #include "auton/intake.hpp"
 #include "auton/flywheel.hpp"
 #include "auton/autons.hpp"
+#include "auton/pneumatics.hpp"
 
 #include "driver/intake.hpp"
 #include "driver/flywheel.hpp"
 #include "driver/pneumatics.hpp"
 #include "driver/drive.hpp"
+
+#include "selector/button.hpp"
+#include "selector/display.hpp"
 
 #include "functions.hpp"
 
@@ -60,6 +64,9 @@ extern double target_speed;
 
 extern bool r;
 extern bool l;
+
+extern bool selected;
+extern int program;
 
 /**
  * If you find doing pros::Motor() to be tedious and you'd prefer just to do

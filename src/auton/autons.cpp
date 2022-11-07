@@ -4,38 +4,29 @@
 
 using namespace okapi;
 
-bool r = true;
-bool l = false;
-
-void right_auton() {
-	target_speed = 73;
-	toggle_intake();
-	drive(770);
-	turn(17, r);
-	shoot(3);
-	toggle_intake();
+void right_auton() {//non roller start
+	target_speed = 73;//flywheel speed
+	start_intake();//intake on stop_intake, reverse_intake
+	drive(770);//rotation degrees
+	turn(17, r);//r is right l is left 3.0, 0, 0.6
+	shoot(3);//disk count # represents disc count
+	stop_intake();
 	turn(68, l);
 	target_speed = 40;
 	drive(-900);
 	turn(40, r);
-	pressure(350, 50);
+	pressure(350, 50);//time mm, speed 
 }
 
 void left_auton() {
-	target_speed = 74;
-	pressure(200, 30);
-	pros::delay(200);
-	drive(150, 0.4, 1.1, 0.5, 20);
-	turn(58, r, 0.6);
-	toggle_intake();
-	drive(600, 0.3, 0.5, 0.5, 20);
-	turn(80, l);
-	pros::delay(1000);
-	shoot(4);
-	turn(68, r);
-	target_speed = 66;
-	drive(640, 0.15, 0.5);
-	turn(81, l);
-	pros::delay(1000);
-	shoot(4);
+	target_speed = 76;
+	start_intake();
+	lift_pneumatics();
+	drive(250);
+	shoot(2);
+	point_right(300);
+	lower_pneumatics();
+	pros::delay(2500);
+	point_right(-300);//swing
+	shoot(3);
 }

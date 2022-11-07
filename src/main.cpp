@@ -1,13 +1,18 @@
 #include "main.h"
 #include "okapi/api.hpp"
+#include "pros/screen.h"
+
 using namespace okapi;
 
-double flywheel_speed = 0;
-double target_speed = 0;
-bool driving = false;
+bool driving;
+double flywheel_speed;
+double target_speed;
 
-bool r = true;
-bool l = false;
+bool r;
+bool l;
+
+bool selected;
+int program;
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -34,7 +39,9 @@ void disabled() {
  * This task will exit when the robot is enabled and autonomous or opcontrol
  * starts.
  */
-void competition_initialize() {}
+void competition_initialize() {
+	run_selector();
+}
 
 /**
  * Runs the user autonomous code. This function will be started in its own task
@@ -48,17 +55,17 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	bool auton = false;
+	bool auton = true; //false is left, true is right
 
-	driving = false;
-	pros::Task flywheel_auton(flywheel_task);
+	bool driving = false;
+	//pros::Task flywheel_auton(flywheel_task);
 
 	if (auton) {
 		right_auton();
 	} else {
 		left_auton();
 	}
-	flywheel_auton.suspend();
+	//flywheel_auton.suspend();
 }
 
 /**
@@ -75,12 +82,11 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-	IMU inertial(16, IMUAxes::z);
-
 	pros::Task run_indexer(indexer_task);
 	pros::Task run_intake(intake_task);
 	pros::Task run_catapults(catapults_task);
 	pros::Task run_drive(drive_task);
 	pros::Task run_intake_lift(intake_lift_task);
+
 	driving = true;
 }

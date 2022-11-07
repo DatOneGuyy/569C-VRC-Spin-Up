@@ -1,5 +1,5 @@
 #include "main.h"
-#include "functions.h"
+#include "functions.hpp"
 
 double controller_map(double i) {
 	double sign = i == 0 ? 0 : fabs(i) / i;

@@ -15,3 +15,4 @@ void turn(double angle,
           double slew_rate = 0.4, 
           double threshold = 2, 
           double timeout = 3000);
+void point_right(double distance);

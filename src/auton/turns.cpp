@@ -21,7 +21,7 @@ void turn_right(double angle, double slew_rate, double threshold, double timeout
 
 	double error = angle;
 	double power = 0;
-	double kp = fmax(fmin(angle / 57, 1.5), 0.6);
+	double kp = fmax(fmin(angle / 40, 3), 0.6);//reducing '40' makes higher speed
 	double kd = 0;
 	double past_error = 0;
 
@@ -37,6 +37,8 @@ void turn_right(double angle, double slew_rate, double threshold, double timeout
 
 		left.moveVoltage(120 * power);
 		right.moveVoltage(-120 * power);
+
+		pros::screen::print(pros::E_TEXT_MEDIUM, 1, "%f", power);
 
 		slew_count++;
 		past_error = error;
@@ -63,7 +65,7 @@ void turn_left(double angle, double slew_rate, double threshold, double timeout)
 
 	double error = angle;
 	double power = 0;
-	double kp = fmax(fmin(angle / 57, 1.5), 0.6);
+	double kp = fmax(fmin(angle / 40, 3), 0.6);
 	double past_error = 0;
 	double kd = 0;
 
@@ -96,4 +98,9 @@ void turn(double angle, bool direction, double p, double d, double slew_rate, do
 	} else {
 		turn_left(angle, slew_rate, threshold, timeout);
 	}
+}
+
+void point_right(double distance) {
+	MotorGroup right({10, 18, 19});
+	right.moveRelative(distance, 70);
 }
