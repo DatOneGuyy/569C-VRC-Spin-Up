@@ -5,8 +5,14 @@
 using namespace okapi;
 
 bool driving;
+
 double flywheel_speed;
 double target_speed;
+double flywheel_voltage;
+
+int smoothing = 10;
+double speeds[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+
 
 bool r = true;
 bool l = false;
@@ -27,9 +33,7 @@ void initialize() {}
  * the VEX Competition Switch, following either autonomous or opcontrol. When
  * the robot is enabled, this task will exit.
  */
-void disabled() {
-	run_selector();
-}
+void disabled() {}
 
 /**
  * Runs after initialize(), and before autonomous when connected to the Field
@@ -40,9 +44,7 @@ void disabled() {
  * This task will exit when the robot is enabled and autonomous or opcontrol
  * starts.
  */
-void competition_initialize() {
-	run_selector();
-}
+void competition_initialize() {}
 
 /**
  * Runs the user autonomous code. This function will be started in its own task
@@ -56,19 +58,25 @@ void competition_initialize() {
  * from where it left off.
  */
 void autonomous() {
-	int auton = 4; //false is left, true is right
+	program = 4; 
 
 	bool driving = false;
 
 	clear_screen();
-	pros::Task flywheel_auton(flywheel_task);
 
-	if (auton == 0 || auton == 2) {
+	pros::Task flywheel_auton(flywheel_task);
+	pros::Task grapher_task(grapher);
+
+	if (program == 0 || program == 1) {
 		right_auton();
-	} else if (auton == 1 || auton == 3) {
+	} else if (program == 2 || program == 3) {
 		left_auton();
-	} else if (auton == 4) {
+	} else if (program == 4) {
 		skills();
+	} else if (program == 5 || program == 6) {
+		win_point();
+	} else if (program == 7) {
+		flywheel_test();
 	}
 	flywheel_auton.suspend();
 }

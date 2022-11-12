@@ -54,6 +54,11 @@ void stop_intake() {
 	intake.moveVoltage(0);
 }
 
+void slow_intake() {
+	Motor intake(-9);
+	intake.moveVoltage(8000);
+}
+
 void reverse_intake() {
 	Motor intake(-9);
 	intake.moveVoltage(-12000);

@@ -21,8 +21,8 @@ void turn_right(double angle, double slew_rate, double threshold, double timeout
 
 	double error = angle;
 	double power = 0;
-	double kp = fmax(fmin(angle / 70, 1.6), 0.6);//reducing '40' makes higher speed
-	double kd = 0.3;
+	double kp = fmax(fmin(angle / 70, 1.6), 0.6);
+	double kd = 0.1;
 	double past_error = 0;
 
 	int slew_count = 0;
@@ -38,12 +38,10 @@ void turn_right(double angle, double slew_rate, double threshold, double timeout
 		left.moveVoltage(120 * power);
 		right.moveVoltage(-120 * power);
 
-		pros::screen::print(pros::E_TEXT_MEDIUM, 1, "%f", power);
-
 		slew_count++;
 		past_error = error;
 
-		if (fabs(error) < 50 && fabs(power) < 4) {
+		if (fabs(error) < 50 && fabs(power) < 10) {
 			break;
 		}
 
@@ -71,7 +69,7 @@ void turn_left(double angle, double slew_rate, double threshold, double timeout)
 	double power = 0;
 	double kp = fmax(fmin(angle / 70, 1.6), 0.6);
 	double past_error = 0;
-	double kd = 0.3;
+	double kd = 0.1;
 
 	int slew_count = 0;
 	int step = 2;
@@ -89,7 +87,7 @@ void turn_left(double angle, double slew_rate, double threshold, double timeout)
 		slew_count++;
 		past_error = error;
 
-		if (fabs(error) < 50 && fabs(power) < 4) {
+		if (fabs(error) < 50 && fabs(power) < 10) {
 			break;
 		}
 

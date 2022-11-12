@@ -61,6 +61,10 @@
 extern bool driving;
 extern double flywheel_speed;
 extern double target_speed;
+extern double flywheel_voltage;
+
+extern int smoothing;
+extern double speeds[];
 
 extern bool r;
 extern bool l;

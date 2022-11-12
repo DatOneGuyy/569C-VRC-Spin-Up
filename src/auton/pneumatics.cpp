@@ -22,3 +22,10 @@ void retract_indexer() {
     pros::ADIPort indexer('A', pros::E_ADI_DIGITAL_OUT);
     indexer.set_value(false);
 }
+
+void expand() {
+    pros::ADIPort catapults('B', pros::E_ADI_DIGITAL_OUT);
+	pros::ADIPort catapults2('D', pros::E_ADI_DIGITAL_OUT);
+    catapults.set_value(true);
+    catapults2.set_value(true);
+}

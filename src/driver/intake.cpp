@@ -18,10 +18,18 @@ void intake_task(void*) {
 		if (!R2.isPressed()) {
 			intake.moveVoltage(12000 * (active ? 1 : 0));
 		} else if (R2.isPressed()) {
-			if (optical.getHue() < 10 || optical.getHue() > 340) {
-				intake.moveVoltage(0);
+			if (program == 0 || program == 2 || program == 4 || program == 5) {
+				if (optical.getHue() < 10 || optical.getHue() > 340) {
+					intake.moveVoltage(0);
+				} else {
+					intake.moveVoltage(-12000);
+				}
 			} else {
-				intake.moveVoltage(-12000);
+				if (optical.getHue() < 260 && optical.getHue() > 180) {
+					intake.moveVoltage(0);
+				} else {
+					intake.moveVoltage(-12000);
+				}
 			}
 		} else {
 			intake.moveVoltage(0);

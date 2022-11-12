@@ -10,70 +10,115 @@ void clear_screen() {
 }
 
 void right_auton() {//non roller start
-	/*
-	target_speed = 73;//flywheel speed
-	start_intake();//intake on stop_intake, reverse_intake
-	drive(770);//rotation degrees
-	turn(17, r);//r is right l is left 3.0, 0, 0.6
-	shoot(3);//disk count # represents disc count
-	stop_intake();
-	turn(68, l);
-	target_speed = 40;
-	drive(-900);
-	turn(40, r);
-	pressure(350, 50);//time mm, speed 
-	*/
-	turn(40, r);
+	target_speed = 77;
+	start_intake();
+	drive(600);
+	pros::delay(200);
+	turn(15, r, 0.1, 1);
+	shoot(3);
+	turn_left(67);
+	extend_indexer();
+	pros::delay(200);
+	drive(700);
+	pros::delay(500);
+	drive(-1000);
+	turn(47, r);
+	retract_indexer();
+	pros::delay(500);
+	shoot(2);
+	target_speed = 15;
+	turn(75, l);
+	drive(-390);
+	turn(28, r);
+	pressure(300, 30);
 }
 
-void left_auton() {
-	target_speed = 72;
+void left_auton() { //roller start
+	target_speed = 75;
 	start_intake();
-	lift_pneumatics();
-	drive(340);
+	drive(300);
 	shoot(2);
+	target_speed = 76;
 	extend_indexer();
-	point_right(440);
-	small(100);
+	lift_pneumatics();
+	point_right(420);
+	small(110);
 	lower_pneumatics();
-	pros::delay(3000);
+	pros::delay(1500);
+	lift_pneumatics();
+	pros::delay(300);
+	lower_pneumatics();
+	pros::delay(1500);
 	retract_indexer();
-	point_right(-380);
+	point_right(-330);
+	pros::delay(1200);
 	shoot(3);
+	target_speed = 15;
 	stop_intake();
 	turn(55, r);
 	pros::delay(300);
-	drive(-380, 0.3, 1.1, 0.6, 20);
-	turn(50, l, 0.6, 10);
-	pressure(500, 60);
+	drive(-380);
+	turn(55, l, 0.3, 4);
+	pressure(700, 50);
 }
 
 void skills() {
-	/*
-	target_speed = 72;
+	target_speed = 75;
 	start_intake();
-	lift_pneumatics();
-	drive(340);
+	drive(300);
 	shoot(2);
+	target_speed = 76;
 	extend_indexer();
-	point_right(440);
-	small(100);
+	lift_pneumatics();
+	point_right(420);
+	small(110);
 	lower_pneumatics();
-	pros::delay(3000);
+	pros::delay(1500);
+	lift_pneumatics();
+	pros::delay(300);
+	lower_pneumatics();
+	pros::delay(1500);
 	retract_indexer();
-	point_right(-380);
+	point_right(-330);
+	pros::delay(1200);
 	shoot(3);
+	target_speed = 15;
 	stop_intake();
 	turn(55, r);
 	pros::delay(300);
-	drive(-380, 0.3, 1.1, 0.6, 20);
-	turn(50, l, 1.2, 0.25, 0.6, 10);
+	drive(-380);
+	turn(55, l, 0.3, 4);
 	pressure(1000, 30);
-	reverse_intake();
+	drive(400);
+	turn(45, r);
+	drive(-200);
+	expand();
+}
+
+void win_point() {
+	target_speed = 78;
+	pressure(130, 20);
+	drive(150);
+	turn(45, r);
+	pros::delay(200);
+	toggle_intake();
+	drive(500);
+	turn(73, l, 0.05);
 	pros::delay(1000);
-	drive(200);
-	pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 6, "done");
-	turn(45, r);*/
-	drive(300);
-	turn(90, l);
+	shoot(3);
+	stop_intake();
+	target_speed = 15;
+	turn(61, r, 0.05, 0.4);
+	pros::delay(200);
+	reverse_intake();
+	drive(2270);
+	turn(165, l);
+	pressure(900, 60);
+	reverse_intake();
+	point_right(-400);
+	stop_intake();
+}
+
+void flywheel_test() {
+	target_speed = 78;
 }

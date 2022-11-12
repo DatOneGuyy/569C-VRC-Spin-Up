@@ -50,3 +50,18 @@ double sign(double x) {
     return fabs(x) / x;
   }
 }
+
+void shift() {
+  for (int i = 0; i < smoothing - 1; i++) {
+    speeds[i] = speeds[i + 1];
+  }
+  speeds[smoothing - 1] = speeds[smoothing - 2];
+}
+
+double average_speed() {
+  double sum = 0;
+  for (int i = 0; i < smoothing; i++) {
+    sum += speeds[i] * (i + 1);
+  }
+  return sum / ((smoothing * (smoothing + 1.0)) / 2.0);
+}

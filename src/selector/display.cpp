@@ -37,11 +37,8 @@ void empty() {
 }
 
 void run_selector() {
-    pros::screen::print(pros::E_TEXT_SMALL, 1 ,"start");
     selected = false;
-    pros::screen::touch_callback(empty, TOUCH_RELEASED);
+    pros::screen::touch_callback(empty, TOUCH_PRESSED);
+    perror("error");    
     display();
-    while (true) {
-		pros::delay(50);
-	}
 }

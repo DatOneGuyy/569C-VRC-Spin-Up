@@ -6,17 +6,18 @@ using namespace okapi;
 
 void indexer_task(void*) {
 	ControllerButton L1(ControllerDigital::L1);
-	pros::ADIPort indexer('A', pros::E_ADI_DIGITAL_OUT);
 	ControllerButton L2(ControllerDigital::L2);
 	ControllerButton UP(ControllerDigital::up);
 	ControllerButton RIGHT(ControllerDigital::right);
+
+	pros::ADIPort indexer('A', pros::E_ADI_DIGITAL_OUT);
 	Motor flywheel(13);
 
-	double rate = 3;
+	double rate = 3.2;
 
 	bool flywheel_idle = true;
 	double idle = 40;
-	double active = 85;
+	double active = 77;
 
 	indexer.set_value(false);
 
@@ -35,10 +36,13 @@ void indexer_task(void*) {
 				indexer.set_value(true);
 				flywheel.moveVoltage(ptv(100));
 				pros::delay(1000 / rate * 0.3);
+
 				indexer.set_value(false);
 				pros::delay(1000 / rate * 0.7);
 			}
+
 			pros::delay(500);
+
 			flywheel_idle = true;
 			flywheel.moveVoltage(ptv(idle));
 			pros::delay(500);
@@ -47,8 +51,10 @@ void indexer_task(void*) {
 			indexer.set_value(true);
 			flywheel.moveVoltage(ptv(100));
 			pros::delay(1000 / rate * 0.3);
+
 			indexer.set_value(false);
 			pros::delay(1000 / rate * 0.7);
+			
 			flywheel.moveVoltage(ptv(idle));
 		}
 		if (RIGHT.changedToPressed()) {
