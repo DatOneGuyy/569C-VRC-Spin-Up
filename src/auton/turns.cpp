@@ -6,8 +6,8 @@
 using namespace okapi;
 
 void turn_right(double angle, double slew_rate, double threshold, double timeout) {
-	MotorGroup left({-3, -11, -12});
-	MotorGroup right({10, 18, 19});
+	MotorGroup left({3, -11, -10});
+	MotorGroup right({-1, 18, 4});
 
 	left.setEncoderUnits(AbstractMotor::encoderUnits::degrees);
 	right.setEncoderUnits(AbstractMotor::encoderUnits::degrees);
@@ -52,8 +52,8 @@ void turn_right(double angle, double slew_rate, double threshold, double timeout
 }
 
 void turn_left(double angle, double slew_rate, double threshold, double timeout) {
-	MotorGroup left({-3, -11, -12});
-	MotorGroup right({10, 18, 19});
+	MotorGroup left({3, -11, -10});
+	MotorGroup right({-1, 18, 4});
 
 	left.setEncoderUnits(AbstractMotor::encoderUnits::degrees);
 	right.setEncoderUnits(AbstractMotor::encoderUnits::degrees);
@@ -107,7 +107,7 @@ void turn(double angle, bool direction, double slew_rate, double threshold, doub
 }
 
 void point_right(double distance) {
-	MotorGroup right({10, 18, 19});
+	MotorGroup right({-1, 18, 4});
 	right.tarePosition();
 	while (fabs(right.getPosition()) < fabs(distance)) {
 		right.moveVelocity(80 * sign(distance));

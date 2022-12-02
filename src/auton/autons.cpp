@@ -10,56 +10,53 @@ void clear_screen() {
 }
 
 void right_auton() {//non roller start
-	target_speed = 77;
+	target_speed = 75.5;
 	start_intake();
-	drive(600);
+	drive(360);
 	pros::delay(200);
 	turn(15, r, 0.1, 1);
 	shoot(3);
 	turn_left(67);
 	extend_indexer();
 	pros::delay(200);
-	drive(700);
+	drive(420);
 	pros::delay(500);
-	drive(-1000);
+	drive(-600);
 	turn(47, r);
 	retract_indexer();
 	pros::delay(500);
 	shoot(2);
 	target_speed = 15;
 	turn(75, l);
-	drive(-390);
+	drive(-234);
 	turn(28, r);
-	pressure(300, 30);
+	pressure(200, 30);
 }
 
 void left_auton() { //roller start
 	target_speed = 75;
 	start_intake();
-	drive(300);
+	drive(180);
 	shoot(2);
-	target_speed = 76;
+	target_speed = 74;
 	extend_indexer();
 	lift_pneumatics();
-	point_right(420);
-	small(110);
+	pros::delay(200);
+	point_right(252);
+	small(66);
 	lower_pneumatics();
-	pros::delay(1500);
-	lift_pneumatics();
-	pros::delay(300);
-	lower_pneumatics();
-	pros::delay(1500);
+	pros::delay(2500);
 	retract_indexer();
-	point_right(-330);
+	point_right(-186);
 	pros::delay(1200);
 	shoot(3);
 	target_speed = 15;
 	stop_intake();
-	turn(55, r);
+	turn(51, r);
 	pros::delay(300);
-	drive(-380);
+	drive(-228);
 	turn(55, l, 0.3, 4);
-	pressure(700, 50);
+	pressure(420, 50);
 }
 
 void skills() {

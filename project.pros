@@ -309,8 +309,9 @@
       }
     },
     "upload_options": {
-      "icon": "alien",
-      "description": "ãmóñgûs sus"
+      "icon": "ufo",
+      "description": "AMOGUS",
+      "after": "none"
     }
   }
 }

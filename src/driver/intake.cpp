@@ -8,7 +8,7 @@ void intake_task(void*) {
 	ControllerButton R1(ControllerDigital::R1);
 	ControllerButton R2(ControllerDigital::R2);
 	Motor intake(-9);
-	OpticalSensor optical(14);
+	OpticalSensor optical(7);
 	bool active = false;
 
 	while (true && driving) {

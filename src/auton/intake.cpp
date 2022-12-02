@@ -5,8 +5,8 @@
 using namespace okapi;
 
 void pressure(double time, double speed) {
-	MotorGroup left({-3, -11, -12});
-	MotorGroup right({10, 18, 19});
+	MotorGroup left({3, -11, -10});
+	MotorGroup right({-1, 18, 4});
 	Motor intake(-9);
 
 	left.setEncoderUnits(AbstractMotor::encoderUnits::degrees);
