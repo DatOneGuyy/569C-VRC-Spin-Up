@@ -117,6 +117,6 @@ void small(double distance) {
 	MotorGroup left({3, -11, -10});
 	MotorGroup right({-1, 18, 4});
 
-	left.moveRelative(distance, 60);
-	right.moveRelative(distance, 60);
-}
+	left.moveRelative(distance, 50);
+	right.moveRelative(distance, 50);
+} 

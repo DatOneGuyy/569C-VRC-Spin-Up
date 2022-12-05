@@ -34,11 +34,12 @@ void right_auton() {//non roller start
 }
 
 void left_auton() { //roller start
-	target_speed = 75;
+	pros::Task grapher_task(grapher);
+	target_speed = 77;
 	start_intake();
 	drive(180);
 	shoot(2);
-	target_speed = 74;
+	target_speed = 75.5;
 	extend_indexer();
 	lift_pneumatics();
 	pros::delay(200);
@@ -47,9 +48,10 @@ void left_auton() { //roller start
 	lower_pneumatics();
 	pros::delay(2500);
 	retract_indexer();
-	point_right(-186);
+	point_right(-194);
 	pros::delay(1200);
-	shoot(3);
+	shoot(1);
+	shoot(2);
 	target_speed = 15;
 	stop_intake();
 	turn(51, r);

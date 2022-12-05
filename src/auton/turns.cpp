@@ -110,7 +110,7 @@ void point_right(double distance) {
 	MotorGroup right({-1, 18, 4});
 	right.tarePosition();
 	while (fabs(right.getPosition()) < fabs(distance)) {
-		right.moveVelocity(80 * sign(distance));
+		right.moveVelocity(60 * sign(distance));
 		pros::delay(10);
 	}
 	right.moveVelocity(0);
