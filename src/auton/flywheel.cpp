@@ -9,7 +9,7 @@ void shoot(int count) {
 	pros::ADIPort indexer('A', pros::E_ADI_DIGITAL_OUT);
 	double shot_1, shot_2, shot_3;
 	for (int i = 0; i < count; i++) {
-		while (fabs(average_speed() - target_speed) > 0.35) {
+		while (fabs(average_speed() - target_speed) > 0.3) {
 			pros::delay(1);
 		}
 		indexer.set_value(true);
@@ -121,6 +121,6 @@ void flywheel_task(void*) {
 		past_error = error;
 		past_voltage = voltage;
 		
-		pros::delay(10);
+		pros::delay(2);
 	}
 }

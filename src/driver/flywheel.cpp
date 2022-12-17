@@ -16,8 +16,8 @@ void indexer_task(void*) {
 	double rate = 3.2;
 
 	bool flywheel_idle = true;
-	double idle = 40;
-	double active = 77;
+	double idle = 30;
+	double active = 68;
 
 	indexer.set_value(false);
 
@@ -34,7 +34,7 @@ void indexer_task(void*) {
 		if (L1.changedToPressed() && !flywheel_idle) {
 			for (int i = 0; i < 3; i++) {
 				indexer.set_value(true);
-				flywheel.moveVoltage(ptv(100));
+				flywheel.moveVoltage(ptv(90));
 				pros::delay(1000 / rate * 0.3);
 
 				indexer.set_value(false);
@@ -58,10 +58,10 @@ void indexer_task(void*) {
 			flywheel.moveVoltage(ptv(idle));
 		}
 		if (RIGHT.changedToPressed()) {
-			if (active == 85) {
-				active = 100;
+			if (active == 68) {
+				active = 75;
 			} else {
-				active = 85;
+				active = 68;
 			}
 		}
 		pros::delay(10);

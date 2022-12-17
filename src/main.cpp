@@ -13,6 +13,9 @@ double flywheel_voltage;
 int smoothing = 10;
 double speeds[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
+double intake_voltage;
+bool changing = false;
+double speed = 20;
 
 bool r = true;
 bool l = false;
@@ -26,7 +29,9 @@ int program;
  * All other competition modes are blocked by initialize; it is recommended
  * to keep execution time for this mode under a few seconds.
  */
-void initialize() {}
+void initialize() {
+	pros::Task run_intake_handler(intake_handler);
+}
 
 /**
  * Runs while the robot is in the disabled state of Field Management System or
@@ -58,7 +63,7 @@ void competition_initialize() {driving = false;}
  * from where it left off.
  */
 void autonomous() {
-	program = 2; 
+	program = 0; 
 
 	bool driving = false;
 
@@ -74,7 +79,7 @@ void autonomous() {
 	} else if (program == 4) {
 		skills();
 	} else if (program == 5 || program == 6) {
-		win_point();
+		//run bozo code here
 	} else if (program == 7) {
 		flywheel_test();
 	}

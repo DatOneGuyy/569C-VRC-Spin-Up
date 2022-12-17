@@ -16,50 +16,53 @@ void pressure(double time, double speed) {
 	right.moveVoltage(-speed * 120);
 
 	for (int i = 0; i < time / 10; i++) {
-		intake.moveVoltage(-12000);
+		intake_voltage = -12000;
 		pros::delay(10);
 	}
 
-	intake.moveVoltage(0);
+	intake_voltage = 0;
 	left.moveVoltage(0);
 	right.moveVoltage(0);
 }
 
-void toggle_intake(bool reverse) {
-	Motor intake(-9);
-	bool intake_active = false;
-
-	if (intake.getActualVelocity() > 3) {
-		intake_active = true;
-	} else {
-		intake_active = false;
-	}
-
-	if (intake_active) {
-		intake_active = false;
-		intake.moveVoltage(0);
-	} else {
-		intake_active = true;
-		intake.moveVoltage(reverse ? -12000 : 12000);
-	}
-}
-
 void start_intake() {
-	Motor intake(-9);
-	intake.moveVoltage(12000);
+	intake_voltage = 12000;
 }
 
 void stop_intake() {
-	Motor intake(-9);
-	intake.moveVoltage(0);
+	intake_voltage = 0;
 }
 
 void slow_intake() {
-	Motor intake(-9);
-	intake.moveVoltage(8000);
+	intake_voltage = 8000;
 }
 
 void reverse_intake() {
+	intake_voltage = -12000;
+}
+
+void intake_handler(void*) {
 	Motor intake(-9);
-	intake.moveVoltage(-12000);
+	intake.setGearing(AbstractMotor::gearset::blue);
+	intake_voltage = 0;
+	speed = 20;
+
+	bool past_change = false;
+
+	while (true) {
+		intake.moveVoltage(intake_voltage);
+		if (fabs(intake.getActualVelocity()) < speed && fabs(intake_voltage) > 5000 && !changing)  {
+			intake.moveVoltage(-12000);
+			pros::delay(200);
+			intake.moveVoltage(intake_voltage);
+			pros::delay(500);
+		}
+		if (changing && !past_change) {
+			pros::delay(700);
+			changing = false;
+		}
+		pros::screen::print(pros::E_TEXT_SMALL, 0, "%f", intake.getActualVelocity());
+		past_change = changing;
+		pros::delay(5);
+	}
 }
