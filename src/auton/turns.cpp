@@ -7,7 +7,7 @@ using namespace okapi;
 
 void turn_right(double angle, double slew_rate, double threshold, double timeout) {
 	MotorGroup left({3, -11, -10});
-	MotorGroup right({-1, 18, 4});
+	MotorGroup right({-2, 18, 4});
 
 	left.setEncoderUnits(AbstractMotor::encoderUnits::degrees);
 	right.setEncoderUnits(AbstractMotor::encoderUnits::degrees);
@@ -53,7 +53,7 @@ void turn_right(double angle, double slew_rate, double threshold, double timeout
 
 void turn_left(double angle, double slew_rate, double threshold, double timeout) {
 	MotorGroup left({3, -11, -10});
-	MotorGroup right({-1, 18, 4});
+	MotorGroup right({-2, 18, 4});
 
 	left.setEncoderUnits(AbstractMotor::encoderUnits::degrees);
 	right.setEncoderUnits(AbstractMotor::encoderUnits::degrees);
@@ -106,12 +106,54 @@ void turn(double angle, bool direction, double slew_rate, double threshold, doub
 	}
 }
 
-void point_right(double distance) {
-	MotorGroup right({-1, 18, 4});
+void swing_right(double distance, double speed) {
+	MotorGroup right({-2, 18, 4});
 	right.tarePosition();
 	while (fabs(right.getPosition()) < fabs(distance)) {
-		right.moveVelocity(60 * sign(distance));
-		pros::delay(10);
+		right.moveVelocity(speed * sign(distance));
+		pros::delay(3);
 	}
 	right.moveVelocity(0);
+}
+
+void swing_left(double distance, double speed) {
+	MotorGroup left({3, -11, -10});
+	left.tarePosition();
+	while (fabs(left.getPosition()) < fabs(distance)) {
+		left.moveVelocity(speed * sign(distance));
+		pros::delay(3);
+	}
+	left.moveVelocity(0);
+}
+
+void swing_right_inertial(double angle, double speed) {
+	MotorGroup right({-2, 18, 4});
+	IMU inertial(16, IMUAxes::z);
+	IMU inertial2(12, IMUAxes::z);
+	IMU inertial3(19, IMUAxes::z);
+	inertial.reset(0);
+	inertial2.reset(0);
+	inertial3.reset(0);
+	right.tarePosition();
+	while ((fabs(inertial.get()) + fabs(inertial2.get()) + fabs(inertial3.get())) / 3 < fabs(angle)) {
+		right.moveVelocity(speed * sign(angle));
+		pros::delay(3);
+	}
+	right.moveVelocity(0);
+}
+
+void swing_left_inertial(double angle, double speed) {
+	MotorGroup left({3, -11, -10});
+	IMU inertial(16, IMUAxes::z);
+	IMU inertial2(12, IMUAxes::z);
+	IMU inertial3(19, IMUAxes::z);
+	inertial.reset(0);
+	inertial2.reset(0);
+	inertial3.reset(0);
+	left.tarePosition();
+	while ((fabs(inertial.get()) + fabs(inertial2.get()) + fabs(inertial3.get())) / 3 < fabs(angle)) {
+		left.moveVelocity(speed * sign(angle));
+		pros::delay(3);
+	}
+	left.moveVelocity(0);
 }

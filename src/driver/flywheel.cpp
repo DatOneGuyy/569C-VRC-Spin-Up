@@ -13,11 +13,11 @@ void indexer_task(void*) {
 	pros::ADIPort indexer('A', pros::E_ADI_DIGITAL_OUT);
 	Motor flywheel(13);
 
-	double rate = 3.2;
+	double rate = 5.0;
 
 	bool flywheel_idle = true;
 	double idle = 30;
-	double active = 68;
+	double active = 75;
 
 	indexer.set_value(false);
 
@@ -32,7 +32,7 @@ void indexer_task(void*) {
 			flywheel_idle = !flywheel_idle;
 		}
 		if (L1.changedToPressed() && !flywheel_idle) {
-			for (int i = 0; i < 3; i++) {
+			for (int i = 0; i < 2; i++) {
 				indexer.set_value(true);
 				flywheel.moveVoltage(ptv(90));
 				pros::delay(1000 / rate * 0.3);
@@ -40,8 +40,12 @@ void indexer_task(void*) {
 				indexer.set_value(false);
 				pros::delay(1000 / rate * 0.7);
 			}
+			pros::delay(100);
+			indexer.set_value(true);
+			pros::delay(1000 / rate * 0.3);
 
-			pros::delay(500);
+			indexer.set_value(false);
+			pros::delay(1000 / rate * 0.7);
 
 			flywheel_idle = true;
 			flywheel.moveVoltage(ptv(idle));
@@ -49,7 +53,6 @@ void indexer_task(void*) {
 		}
 		if (UP.changedToPressed()) {
 			indexer.set_value(true);
-			flywheel.moveVoltage(ptv(100));
 			pros::delay(1000 / rate * 0.3);
 
 			indexer.set_value(false);
@@ -58,10 +61,10 @@ void indexer_task(void*) {
 			flywheel.moveVoltage(ptv(idle));
 		}
 		if (RIGHT.changedToPressed()) {
-			if (active == 68) {
-				active = 75;
+			if (active == 75) {
+				active = 65;
 			} else {
-				active = 68;
+				active = 75;
 			}
 		}
 		pros::delay(10);

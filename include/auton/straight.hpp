@@ -18,4 +18,4 @@ void drive(double distance,
 		   double slew_rate = 0.3, 
 		   double threshold = 5, 
 		   double timeout = 3000);
-void small(double distance);
+void small(double distance, double speed = 50);

@@ -13,4 +13,7 @@ void turn(double angle,
           double slew_rate = 0.1, 
           double threshold = 2, 
           double timeout = 3000);
-void point_right(double distance);
+void swing_right(double distance, double speed = 60);
+void swing_left(double distance, double speed = 60);
+void swing_right_inertial(double distance, double speed = 60);
+void swing_left_inertial(double distance, double speed = 60);

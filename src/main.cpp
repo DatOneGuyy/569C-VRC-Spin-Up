@@ -38,7 +38,7 @@ void initialize() {
  * the VEX Competition Switch, following either autonomous or opcontrol. When
  * the robot is enabled, this task will exit.
  */
-void disabled() {driving = false;}
+void disabled() {}
 
 /**
  * Runs after initialize(), and before autonomous when connected to the Field
@@ -49,7 +49,7 @@ void disabled() {driving = false;}
  * This task will exit when the robot is enabled and autonomous or opcontrol
  * starts.
  */
-void competition_initialize() {driving = false;}
+void competition_initialize() {}
 
 /**
  * Runs the user autonomous code. This function will be started in its own task
@@ -67,10 +67,10 @@ void autonomous() {
 
 	bool driving = false;
 
-	clear_screen();
+	//clear_screen();
 
 	pros::Task flywheel_auton(flywheel_task);
-	pros::Task grapher_task(grapher);
+	//pros::Task grapher_task(grapher);
 
 	if (program == 0 || program == 1) {
 		right_auton();

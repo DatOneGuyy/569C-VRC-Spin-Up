@@ -7,7 +7,7 @@ using namespace okapi;
 
 void forward(double distance, double p, double g, double slew_rate, double threshold, double timeout) {
 	MotorGroup left({3, -11, -10});
-	MotorGroup right({-1, 18, 4});
+	MotorGroup right({-2, 18, 4});
 
 	left.setEncoderUnits(AbstractMotor::encoderUnits::degrees);
 	right.setEncoderUnits(AbstractMotor::encoderUnits::degrees);
@@ -57,7 +57,7 @@ void forward(double distance, double p, double g, double slew_rate, double thres
 
 void backward(double distance, double p, double g, double slew_rate, double threshold, double timeout) {
 	MotorGroup left({3, -11, -10});
-	MotorGroup right({-1, 18, 4});
+	MotorGroup right({-2, 18, 4});
 
 	left.setEncoderUnits(AbstractMotor::encoderUnits::degrees);
 	right.setEncoderUnits(AbstractMotor::encoderUnits::degrees);
@@ -113,10 +113,10 @@ void drive(double distance, double p, double g, double slew_rate, double thresho
 	}
 }
 
-void small(double distance) {
+void small(double distance, double speed) {
 	MotorGroup left({3, -11, -10});
-	MotorGroup right({-1, 18, 4});
+	MotorGroup right({-2, 18, 4});
 
-	left.moveRelative(distance, 50);
-	right.moveRelative(distance, 50);
+	left.moveRelative(distance, speed);
+	right.moveRelative(distance, speed);
 } 
