@@ -66,6 +66,8 @@ extern double flywheel_voltage;
 extern int smoothing;
 extern double speeds[];
 
+extern double angle_error;
+
 extern bool r;
 extern bool l;
 
