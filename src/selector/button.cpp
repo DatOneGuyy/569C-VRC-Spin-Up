@@ -9,7 +9,7 @@ Button::Button(int x, int y, int w, int h, int type) {
     b_type = type;
 }
 
-void Button::draw() {
+void Button::draw(void) {
     switch (b_type) {
         case 0:
             pros::screen::set_pen(COLOR_RED);
@@ -39,7 +39,7 @@ void Button::draw() {
     }
 }
 
-void Button::display_selected() {
+void Button::display_selected(void) {
     pros::screen::set_pen(COLOR_BLACK);
     pros::screen::fill_rect(0, 0, 480, 240);
     pros::screen::set_pen(COLOR_WHITE);
@@ -62,7 +62,7 @@ void Button::display_selected() {
     }
 }
 
-void Button::test_click() {
+void Button::test_click(void) {
     pros::screen_touch_status_s_t status = pros::screen::touch_status();
     if (status.x > b_x && status.x < b_x + b_w && status.y > b_y && status.y < b_y + b_h) {
         program = b_type;

@@ -5,7 +5,7 @@
 
 using namespace okapi;
 
-void turn_right(double angle, double slew_rate, double threshold, double timeout) {
+void turn_right(double angle, double slew_rate, double threshold, double timeout, int threshold_time) {
 	MotorGroup left({3, -11, -10});
 	MotorGroup right({-2, 18, 4});
 
@@ -17,41 +17,64 @@ void turn_right(double angle, double slew_rate, double threshold, double timeout
 	right.tarePosition();
 
 	IMU inertial(16, IMUAxes::z);
+	IMU inertial2(12, IMUAxes::z);
+	IMU inertial3(19, IMUAxes::z);
 	inertial.reset(0);
+	inertial2.reset(0);
+	inertial3.reset(0);
 
 	double error = angle;
+	double position = (inertial.get() + inertial2.get() + inertial3.get()) / 3;
 	double power = 0;
-	double kp = fmax(fmin(angle / 70, 1.6), 0.6);
-	double kd = 0.1;
+	double kp = 4.5;
+
 	double past_error = 0;
+	double kd = 50;
 
 	int slew_count = 0;
 	int step = 2;
+	int threshold_count = 0;
 
-	while (error > threshold && slew_count * step < timeout) {
-		error = angle - abs(inertial.getRemapped(-180, 180));
+	while (slew_count * step < timeout && threshold_count * step < threshold_time) {
+		position = (inertial.get() + inertial2.get() + inertial3.get()) / 3;
+		error = angle - fabs(position);
 		power = kp * error;
-		power = c(-100, 100, power);
 		power = slew(slew_rate, slew_count, power, 35);
-		power = fmax(power + kd * (error - past_error), 35);
+		power =  power + kd * (error - past_error);
+		power = c(-100, 100, power);
 
 		left.moveVoltage(120 * power);
 		right.moveVoltage(-120 * power);
 
+		if (fabs(error) < threshold || fabs(error - past_error) < 0.1) {
+			threshold_count++;
+		} else {
+			threshold_count = 0;
+		}
+
+		pros::screen::print(pros::E_TEXT_MEDIUM, 0, "Position: %f", position);
+		pros::screen::print(pros::E_TEXT_MEDIUM, 1, "Error: %f", error);
+		pros::screen::print(pros::E_TEXT_MEDIUM, 2, "Threshold count: %d", threshold_count);
+		pros::screen::print(pros::E_TEXT_MEDIUM, 3, "Power: %f", power);
+
 		slew_count++;
 		past_error = error;
 
-		if (fabs(error) < 50 && fabs(power) < 10) {
-			break;
-		}
-
 		pros::delay(step);
 	}
-	left.moveVoltage(0);
-	right.moveVoltage(0);
+	left.moveVelocity(0);
+	right.moveVelocity(0);
+
+	pros::screen::print(pros::E_TEXT_MEDIUM, 4, "Exited");
 }
 
-void turn_left(double angle, double slew_rate, double threshold, double timeout) {
+void turn_left(double angle, double slew_rate, double threshold, double timeout, int threshold_time) {
+	/*
+	angle: [0, 180]
+	slew_rate: [0, 1] - 0.6
+	threshold: [0, 5] - 2
+	timeout: [2000+]
+	*/
 	MotorGroup left({3, -11, -10});
 	MotorGroup right({-2, 18, 4});
 
@@ -63,46 +86,62 @@ void turn_left(double angle, double slew_rate, double threshold, double timeout)
 	right.tarePosition();
 
 	IMU inertial(16, IMUAxes::z);
+	IMU inertial2(12, IMUAxes::z);
+	IMU inertial3(19, IMUAxes::z);
 	inertial.reset(0);
+	inertial2.reset(0);
+	inertial3.reset(0);
 
 	double error = angle;
+	double position = (inertial.get() + inertial2.get() + inertial3.get()) / 3;
 	double power = 0;
-	double kp = fmax(fmin(angle / 70, 1.6), 0.6);
+	double kp = 4;
+
 	double past_error = 0;
-	double kd = 0.1;
+	double kd = 50;
 
 	int slew_count = 0;
 	int step = 2;
+	int threshold_count = 0;
 
-	while (error > threshold && slew_count * step < timeout) {
-		error = angle - abs(inertial.getRemapped(-180, 180));
+	while (slew_count * step < timeout && threshold_count * step < threshold_time) {
+		position = (inertial.get() + inertial2.get() + inertial3.get()) / 3;
+		error = angle - fabs(position);
 		power = kp * error;
-		power = c(-100, 100, power);
 		power = slew(slew_rate, slew_count, power, 35);
-		power = power + kd * (error - past_error);
+		power =  power + kd * (error - past_error);
+		power = c(-100, 100, power);
 
 		left.moveVoltage(-120 * power);
 		right.moveVoltage(120 * power);
 
+		if (fabs(error) < threshold || fabs(error - past_error) < 0.1) {
+			threshold_count++;
+		} else {
+			threshold_count = 0;
+		}
+
+		pros::screen::print(pros::E_TEXT_MEDIUM, 0, "Position: %f", position);
+		pros::screen::print(pros::E_TEXT_MEDIUM, 1, "Error: %f", error);
+		pros::screen::print(pros::E_TEXT_MEDIUM, 2, "Threshold count: %d", threshold_count);
+		pros::screen::print(pros::E_TEXT_MEDIUM, 3, "Power: %f", power);
+
 		slew_count++;
 		past_error = error;
 
-		if (fabs(error) < 50 && fabs(power) < 10) {
-			break;
-		}
-
 		pros::delay(step);
 	}
+	left.moveVelocity(0);
+	right.moveVelocity(0);
 
-	left.moveVoltage(0);
-	right.moveVoltage(0);
+	pros::screen::print(pros::E_TEXT_MEDIUM, 4, "Exited");
 }
 
-void turn(double angle, bool direction, double slew_rate, double threshold, double timeout) {
+void turn(double angle, bool direction, double slew_rate, double threshold, double timeout, int threshold_time) {
 	if (direction) {
-		turn_right(angle, slew_rate, threshold, timeout);
+		turn_right(angle, slew_rate, threshold, timeout, threshold_time);
 	} else {
-		turn_left(angle, slew_rate, threshold, timeout);
+		turn_left(angle, slew_rate, threshold, timeout, threshold_time);
 	}
 }
 

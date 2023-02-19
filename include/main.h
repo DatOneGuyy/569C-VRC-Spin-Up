@@ -76,6 +76,8 @@ extern double intake_voltage;
 extern bool changing;
 extern double speed;
 
+extern bool flywheel_idle;
+
 /**
  * If you find doing pros::Motor() to be tedious and you'd prefer just to do
  * Motor, you can use the namespace with the following commented out line.

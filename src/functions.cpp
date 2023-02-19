@@ -51,14 +51,14 @@ double sign(double x) {
   }
 }
 
-void shift() {
+void shift(void) {
   for (int i = 0; i < smoothing - 1; i++) {
     speeds[i] = speeds[i + 1];
   }
   speeds[smoothing - 1] = speeds[smoothing - 2];
 }
 
-double average_speed() {
+double average_speed(void) {
   double sum = 0;
   for (int i = 0; i < smoothing; i++) {
     sum += speeds[i] * (i + 1);

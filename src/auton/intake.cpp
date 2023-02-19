@@ -31,19 +31,19 @@ void pressure(double time, double speed, double pressure_time) {
 	intake_voltage = 0;
 }
 
-void start_intake() {
+void start_intake(void) {
 	intake_voltage = 12000;
 }
 
-void stop_intake() {
+void stop_intake(void) {
 	intake_voltage = 0;
 }
 
-void slow_intake() {
+void slow_intake(void) {
 	intake_voltage = 8000;
 }
 
-void reverse_intake() {
+void reverse_intake(void) {
 	intake_voltage = -12000;
 }
 

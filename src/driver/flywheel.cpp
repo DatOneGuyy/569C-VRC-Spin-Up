@@ -9,6 +9,9 @@ void indexer_task(void*) {
 	ControllerButton L2(ControllerDigital::L2);
 	ControllerButton UP(ControllerDigital::up);
 	ControllerButton RIGHT(ControllerDigital::right);
+	ControllerButton A(ControllerDigital::A);
+
+	Controller controller;
 
 	pros::ADIPort indexer('A', pros::E_ADI_DIGITAL_OUT);
 	Motor flywheel(13);
@@ -16,56 +19,65 @@ void indexer_task(void*) {
 	double rate = 5.0;
 
 	bool flywheel_idle = true;
-	double idle = 30;
-	double active = 75;
+	bool run_flywheel = true;
+	double idle = 55;
+	double active = 85;
 
 	indexer.set_value(false);
 
 	while (true) {
-		if (flywheel_idle) {
-			flywheel.moveVoltage(ptv(idle));
-		} else {
-			flywheel.moveVoltage(ptv(active));
+		if (A.changedToPressed()) {
+			run_flywheel = !run_flywheel;
 		}
+		if (run_flywheel) {
+			if (flywheel_idle) {
+				flywheel.moveVoltage(ptv(idle));
+			} else {
+				flywheel.moveVoltage(ptv(active));
+				controller.rumble(".");
+			}
 
-		if (L2.changedToPressed()) {
-			flywheel_idle = !flywheel_idle;
-		}
-		if (L1.changedToPressed() && !flywheel_idle) {
-			for (int i = 0; i < 2; i++) {
+			if (L2.changedToPressed()) {
+				flywheel_idle = !flywheel_idle;
+			}
+			if (L1.changedToPressed() && !flywheel_idle) {
+				for (int i = 0; i < 2; i++) {
+					indexer.set_value(true);
+					flywheel.moveVoltage(100);
+					pros::delay(1000 / rate * 0.3);
+
+					indexer.set_value(false);
+					pros::delay(1000 / rate * 0.7);
+				}
+				pros::delay(200);
 				indexer.set_value(true);
-				flywheel.moveVoltage(ptv(90));
 				pros::delay(1000 / rate * 0.3);
 
 				indexer.set_value(false);
 				pros::delay(1000 / rate * 0.7);
+				pros::delay(250);
+
+				flywheel_idle = true;
+				flywheel.moveVoltage(ptv(idle));
 			}
-			pros::delay(100);
-			indexer.set_value(true);
-			pros::delay(1000 / rate * 0.3);
+			if (UP.changedToPressed()) {
+				indexer.set_value(true);
+				pros::delay(1000 / rate * 0.3);
 
-			indexer.set_value(false);
-			pros::delay(1000 / rate * 0.7);
-
-			flywheel_idle = true;
-			flywheel.moveVoltage(ptv(idle));
-			pros::delay(500);
-		}
-		if (UP.changedToPressed()) {
-			indexer.set_value(true);
-			pros::delay(1000 / rate * 0.3);
-
-			indexer.set_value(false);
-			pros::delay(1000 / rate * 0.7);
-			
-			flywheel.moveVoltage(ptv(idle));
-		}
-		if (RIGHT.changedToPressed()) {
-			if (active == 75) {
-				active = 65;
-			} else {
-				active = 75;
+				indexer.set_value(false);
+				pros::delay(1000 / rate * 0.7);
+				
+				flywheel.moveVoltage(ptv(idle));
 			}
+			if (RIGHT.changedToPressed()) {
+				if (active == 75) {
+					active = 65;
+				} else {
+					active = 75;
+				}
+			}
+		} else {
+			flywheel.moveVoltage(0);
 		}
 		pros::delay(10);
 	}

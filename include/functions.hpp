@@ -6,5 +6,5 @@ double avg(double, double);
 double c(double, double, double);
 double slew(double, int, double, double);
 double sign(double);
-void shift();
-double average_speed();
+void shift(void);
+double average_speed(void);

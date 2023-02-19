@@ -23,13 +23,15 @@ bool l = false;
 bool selected;
 int program;
 
+bool flywheel_idle;
+
 /**
  * Runs initialization code. This occurs as soon as the program is started.
  *
  * All other competition modes are blocked by initialize; it is recommended
  * to keep execution time for this mode under a few seconds.
  */
-void initialize() {
+void initialize(void) {
 	pros::Task run_intake_handler(intake_handler);
 }
 
@@ -38,7 +40,7 @@ void initialize() {
  * the VEX Competition Switch, following either autonomous or opcontrol. When
  * the robot is enabled, this task will exit.
  */
-void disabled() {}
+void disabled(void) {}
 
 /**
  * Runs after initialize(), and before autonomous when connected to the Field
@@ -49,7 +51,7 @@ void disabled() {}
  * This task will exit when the robot is enabled and autonomous or opcontrol
  * starts.
  */
-void competition_initialize() {}
+void competition_initialize(void) {}
 
 /**
  * Runs the user autonomous code. This function will be started in its own task
@@ -62,8 +64,8 @@ void competition_initialize() {}
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-void autonomous() {
-	program = 0; 
+void autonomous(void) {
+	program = 4; 
 
 	bool driving = false;
 
@@ -99,13 +101,14 @@ void autonomous() {
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
-void opcontrol() {
+void opcontrol(void) {
 	driving = true;
+	pros::Task grapher_task(grapher);
 	pros::Task run_indexer(indexer_task);
 	pros::Task run_intake(intake_task);
 	pros::Task run_catapults(catapults_task);
 	pros::Task run_drive(drive_task);
-	pros::Task run_intake_lift(intake_lift_task);
+	pros::Task run_angle_changer(angle_changer_task);
 
 	driving = true;
 }

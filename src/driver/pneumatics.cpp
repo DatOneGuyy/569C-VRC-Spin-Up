@@ -11,7 +11,7 @@ void catapults_task(void*) {
 
 	bool pneumatics_extended = false;
 
-	while (true && driving) {
+	while (driving) {
 		if (LEFT.changedToPressed()) {
 			pneumatics_extended = !pneumatics_extended;
 			catapults.set_value(pneumatics_extended);
@@ -21,15 +21,18 @@ void catapults_task(void*) {
 	}
 }
 
-void intake_lift_task(void*) {
+void angle_changer_task(void*) {
 	ControllerButton DOWN(ControllerDigital::down);
-	pros::ADIPort lift('C', pros::E_ADI_DIGITAL_OUT);
+	pros::ADIPort angle_changer('E', pros::E_ADI_DIGITAL_OUT);
 
-	bool pneumatics_extended = false;
-	while (true && driving) {
+	bool angled_up = true;
+
+	angle_changer.set_value(true);
+
+	while (driving) {
 		if (DOWN.changedToPressed()) {
-			pneumatics_extended = !pneumatics_extended;
-			lift.set_value(pneumatics_extended);
+			angled_up = !angled_up;
+			angle_changer.set_value(angled_up);
 		}
 		pros::delay(20);
 	}

@@ -1,7 +1,7 @@
 #include "main.h"
 #include "selector/display.hpp"
 
-void display() {
+void display(void) {
     pros::screen::set_pen(COLOR_BLACK);
     pros::screen::fill_rect(0, 0, 480, 240);
     Button buttons[5] = {Button(30, 20, 195, 160 / 3, 0), 
@@ -15,7 +15,7 @@ void display() {
     }
 }
 
-void on_click() {
+void on_click(void) {
     Button buttons[5] = {Button(130, 64, 80, 34, 0), 
                          Button(270, 64, 80, 34, 1),
                          Button(130, 118, 80, 34, 2),
@@ -30,13 +30,13 @@ void on_click() {
     }
 }
 
-void empty() {
+void empty(void) {
     pros::screen::set_pen(COLOR_WHITE);
     pros::screen::fill_circle(50, 50, 100);
     printf("touch");
 }
 
-void run_selector() {
+void run_selector(void) {
     selected = false;
     pros::screen::touch_callback(empty, TOUCH_PRESSED);
     perror("error");    
