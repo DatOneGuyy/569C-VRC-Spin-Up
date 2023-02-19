@@ -13,6 +13,8 @@ double flywheel_voltage;
 int smoothing = 10;
 double speeds[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
+double angle_error;
+
 double intake_voltage;
 bool changing = false;
 double speed = 20;
