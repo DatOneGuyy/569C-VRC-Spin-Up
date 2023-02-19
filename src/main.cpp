@@ -14,6 +14,7 @@ int smoothing = 10;
 double speeds[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 double angle_error = 0;
+bool last_turn_direction;
 
 double intake_voltage;
 bool changing = false;
