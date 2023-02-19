@@ -67,6 +67,7 @@ extern int smoothing;
 extern double speeds[];
 
 extern double angle_error;
+extern bool last_turn_direction;
 
 extern bool r;
 extern bool l;
