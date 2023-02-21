@@ -59,12 +59,21 @@ void left_auton(void) { //roller start
 }
 
 void skills(void) {
+	target_speed = 65;
 	pressure(100, 20, 250);
 	small(100, 30);
 	swing_right_inertial(45, 30);
 	small(400, 40);
 	pros::delay(800);
 	turn(135, r);
+	pressure(100, 20, 250);
+	small(100, 30);
+	turn(80, l);
+	drive(600);
+	shoot(3);
+	drive(-550);
+	turn(40, r);
+	drive(600);
 }
 
 void flywheel_test(void) {

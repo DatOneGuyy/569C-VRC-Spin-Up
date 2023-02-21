@@ -66,6 +66,9 @@ extern double flywheel_voltage;
 extern int smoothing;
 extern double speeds[];
 
+extern double angle_error;
+extern bool last_turn_direction;
+
 extern bool r;
 extern bool l;
 
@@ -77,6 +80,7 @@ extern bool changing;
 extern double speed;
 
 extern bool flywheel_idle;
+extern bool angled_up;
 
 /**
  * If you find doing pros::Motor() to be tedious and you'd prefer just to do

@@ -13,6 +13,9 @@ double flywheel_voltage;
 int smoothing = 10;
 double speeds[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
+double angle_error = 0;
+bool last_turn_direction;
+
 double intake_voltage;
 bool changing = false;
 double speed = 20;
@@ -24,6 +27,7 @@ bool selected;
 int program;
 
 bool flywheel_idle;
+bool angled_up = false;
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -33,6 +37,15 @@ bool flywheel_idle;
  */
 void initialize(void) {
 	pros::Task run_intake_handler(intake_handler);
+	IMU inertial(16, IMUAxes::z);
+	IMU inertial2(12, IMUAxes::z);
+	IMU inertial3(19, IMUAxes::z);
+	inertial.calibrate();
+	inertial2.calibrate();
+	inertial3.calibrate();
+	while (inertial.isCalibrating() || inertial2.isCalibrating() || inertial3.isCalibrating()) {
+		pros::delay(200);
+	}
 }
 
 /**
@@ -65,7 +78,7 @@ void competition_initialize(void) {}
  * from where it left off.
  */
 void autonomous(void) {
-	program = 4; 
+	program = 4;
 
 	bool driving = false;
 
