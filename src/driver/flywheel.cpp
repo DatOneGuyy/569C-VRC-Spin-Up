@@ -16,12 +16,12 @@ void indexer_task(void*) {
 	pros::ADIPort indexer('A', pros::E_ADI_DIGITAL_OUT);
 	Motor flywheel(13);
 
-	double rate = 5.5;
+	double rate = 5.0;
 
 	bool flywheel_idle = true;
 	bool run_flywheel = true;
 	double idle = 55;
-	double active = 90;
+	double active = 75;
 
 	indexer.set_value(false);
 
@@ -31,9 +31,9 @@ void indexer_task(void*) {
 		}
 		if (run_flywheel) {
 			if (angled_up) {
-				active = 75;
+				active = 85;
 			} else {
-				active = 90;
+				active = 75;
 			}
 			
 			if (flywheel_idle) {
@@ -47,7 +47,7 @@ void indexer_task(void*) {
 				flywheel_idle = !flywheel_idle;
 			}
 			if (L1.changedToPressed() && !flywheel_idle) {
-				for (int i = 0; i < 2; i++) {
+				for (int i = 0; i < 3; i++) {
 					indexer.set_value(true);
 					flywheel.moveVoltage(100);
 					pros::delay(1000 / rate * 0.3);
@@ -55,12 +55,6 @@ void indexer_task(void*) {
 					indexer.set_value(false);
 					pros::delay(1000 / rate * 0.7);
 				}
-				pros::delay(50);
-				indexer.set_value(true);
-				pros::delay(1000 / rate * 0.3);
-
-				indexer.set_value(false);
-				pros::delay(1000 / rate * 0.7);
 				pros::delay(250);
 
 				flywheel_idle = true;
