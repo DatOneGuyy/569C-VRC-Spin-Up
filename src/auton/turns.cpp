@@ -22,9 +22,9 @@ void turn_right(double angle, double slew_rate, double threshold, double timeout
 	inertial.reset(0);
 	inertial2.reset(0);
 	inertial3.reset(0);
-	
+
 	double target = angle;
-	
+
 	if (angle_error != 0) {
 		if (last_turn_direction == r) {
 			target += angle_error;
@@ -36,13 +36,13 @@ void turn_right(double angle, double slew_rate, double threshold, double timeout
 	double error = target;
 	double position = (inertial.get() + inertial2.get() + inertial3.get()) / 3;
 	double power = 0;
-	double kp = 4.5;
+	double kp = 4.8;
 
 	double past_error = 0;
-	double kd = 50;
+	double kd = 14;
 
 	int slew_count = 0;
-	int step = 2;
+	int step = 10;
 	int threshold_count = 0;
 
 	while (slew_count * step < timeout && threshold_count * step < threshold_time) {
@@ -72,14 +72,15 @@ void turn_right(double angle, double slew_rate, double threshold, double timeout
 
 		pros::delay(step);
 	}
-	
+
 	angle_error = error;
 	last_turn_direction = r;
-	
+
 	left.moveVelocity(0);
 	right.moveVelocity(0);
 
 	pros::screen::print(pros::E_TEXT_MEDIUM, 4, "Exited");
+	pros::screen::print(pros::E_TEXT_MEDIUM, 5, "Overall error: %f", angle_error);
 }
 
 void turn_left(double angle, double slew_rate, double threshold, double timeout, int threshold_time) {
@@ -105,11 +106,11 @@ void turn_left(double angle, double slew_rate, double threshold, double timeout,
 	inertial.reset(0);
 	inertial2.reset(0);
 	inertial3.reset(0);
-	
+
 	double target = angle;
-	
+
 	if (angle_error != 0) {
-		if (last_turn_direction == l) {
+		if (last_turn_direction == r) {
 			target += angle_error;
 		} else {
 			target -= angle_error;
@@ -119,13 +120,13 @@ void turn_left(double angle, double slew_rate, double threshold, double timeout,
 	double error = target;
 	double position = (inertial.get() + inertial2.get() + inertial3.get()) / 3;
 	double power = 0;
-	double kp = 4;
+	double kp = 4.8;
 
 	double past_error = 0;
-	double kd = 50;
+	double kd = 14;
 
 	int slew_count = 0;
-	int step = 2;
+	int step = 10;
 	int threshold_count = 0;
 
 	while (slew_count * step < timeout && threshold_count * step < threshold_time) {
@@ -155,14 +156,15 @@ void turn_left(double angle, double slew_rate, double threshold, double timeout,
 
 		pros::delay(step);
 	}
-	
+
 	angle_error = error;
 	last_turn_direction = r;
-	
+
 	left.moveVelocity(0);
 	right.moveVelocity(0);
 
 	pros::screen::print(pros::E_TEXT_MEDIUM, 4, "Exited");
+	pros::screen::print(pros::E_TEXT_MEDIUM, 5, "Overall error: %f", angle_error);
 }
 
 void turn(double angle, bool direction, double slew_rate, double threshold, double timeout, int threshold_time) {
