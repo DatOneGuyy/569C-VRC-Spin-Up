@@ -25,10 +25,6 @@ void angle_changer_task(void*) {
 	ControllerButton DOWN(ControllerDigital::down);
 	pros::ADIPort angle_changer('E', pros::E_ADI_DIGITAL_OUT);
 
-	bool angled_up = true;
-
-	angle_changer.set_value(true);
-
 	while (driving) {
 		if (DOWN.changedToPressed()) {
 			angled_up = !angled_up;
