@@ -80,6 +80,7 @@ extern bool changing;
 extern double speed;
 
 extern bool flywheel_idle;
+extern bool angled_up;
 
 /**
  * If you find doing pros::Motor() to be tedious and you'd prefer just to do
