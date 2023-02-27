@@ -22,6 +22,7 @@ void pressure(double time, double speed, double pressure_time) {
 	}
 
 	for (int i = 0; i < pressure_time / 10; i++) {
+		changing = true;
 		intake_voltage = 11999;
 		pros::delay(10);
 	}
@@ -32,6 +33,7 @@ void pressure(double time, double speed, double pressure_time) {
 }
 
 void start_intake(void) {
+	changing = true;
 	intake_voltage = 12000;
 }
 
@@ -40,6 +42,7 @@ void stop_intake(void) {
 }
 
 void slow_intake(void) {
+	changing = true;
 	intake_voltage = 8000;
 }
 
@@ -50,6 +53,7 @@ void reverse_intake(void) {
 void intake_handler(void*) {
 	Motor intake(-9);
 	ControllerButton R2(ControllerDigital::R2);
+	pros::Controller master (pros::E_CONTROLLER_MASTER);
 	intake.setGearing(AbstractMotor::gearset::blue);
 	intake_voltage = 0;
 	speed = 2;
@@ -69,10 +73,10 @@ void intake_handler(void*) {
 			intake.moveVoltage(-12000);
 		}
 		if (changing && !past_change) {
-			pros::delay(700);
 			changing = false;
+			pros::delay(700);
 		}
 		past_change = changing;
-		pros::delay(5);
+		pros::delay(10);
 	}
 }
