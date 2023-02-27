@@ -53,7 +53,6 @@ void reverse_intake(void) {
 void intake_handler(void*) {
 	Motor intake(-9);
 	ControllerButton R2(ControllerDigital::R2);
-	pros::Controller master (pros::E_CONTROLLER_MASTER);
 	intake.setGearing(AbstractMotor::gearset::blue);
 	intake_voltage = 0;
 	speed = 2;

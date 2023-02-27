@@ -23,8 +23,6 @@ void shoot(int count) {
 void grapher(void*) {
 	Motor flywheel(13);
 	flywheel.setGearing(AbstractMotor::gearset::red);
-	pros::Controller master (pros::E_CONTROLLER_MASTER);
-	master.clear();
 
 	int counter = 0;
 	pros::screen::set_pen(COLOR_WHITE);

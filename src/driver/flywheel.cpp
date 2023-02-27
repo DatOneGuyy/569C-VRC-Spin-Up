@@ -15,6 +15,7 @@ void indexer_task(void*) {
 
 	pros::ADIPort indexer('A', pros::E_ADI_DIGITAL_OUT);
 	Motor flywheel(13);
+	flywheel.setGearing(AbstractMotor::gearset::red);
 
 	double rate = 5.1;
 
@@ -33,7 +34,7 @@ void indexer_task(void*) {
 			if (angled_up) {
 				active = 65;
 			} else {
-				active = 65;
+				active = 70;
 			}
 			
 			if (flywheel_idle) {
