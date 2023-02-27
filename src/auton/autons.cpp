@@ -10,28 +10,21 @@ void clear_screen(void) {
 }
 
 void right_auton(void) {//non roller start
-	target_speed = 65.5;
+	target_speed = 61;
 	start_intake();
-	drive(360);
-	pros::delay(200);
-	turn(13, r, 0.05, 0.4);
+	drive(320);
+	turn(21, r);
 	shoot(3);
-	target_speed = 68;
-	turn(65, l, 0.05, 1);
-	pros::delay(200);
-	drive(420, 0.2, 0.2, 0.03);
-	pros::delay(500);
-	drive(-600);
-	turn(42, r, 0.05, 0.4);
-	pros::delay(800);
-	shoot(2);
+	target_speed = 55;
+	turn_left(63, l);
+	drive(420);
+	turn(80, r);
 	stop_intake();
-	target_speed = 15;
-	turn(66.5, l);
-	pros::delay(200);
-	drive(-130, 0.3, 1.1, 0.3, 5, 1500);
-	turn(40, r);
-	pressure(280, 40, 180);
+	shoot(3);
+	turn(82, l, 0.1);
+	drive(-1700, 0.6, 1.1, 0.3);
+	swing_right_inertial(-40, 80);
+	pressure(200, 20);
 }
 
 void left_auton(void) { //roller start
@@ -39,12 +32,12 @@ void left_auton(void) { //roller start
 	pressure(100, 20, 110);
 	pros::delay(50);
 	start_intake();
-	swing_right(450, 30);
+	swing_right_inertial(450, 30);
 	small(100, 30);
 	pros::delay(400);
 	small(-100, 30);
 	pros::delay(200);
-	swing_right(-400, 25);
+	swing_right_inertial(-400, 25);
 	pros::delay(700);
 	shoot(3);
 	target_speed = 61;
@@ -59,15 +52,49 @@ void left_auton(void) { //roller start
 }
 
 void skills(void) {
-	target_speed = 65;
-	pressure(100, 20, 250);
+	target_speed = 58;
+	pressure(100, 20, 220);
 	small(100, 30);
 	start_intake();
-	swing_right_inertial(45, 30);
-	small(400, 40);
+	swing_right_inertial(45, 80);
+	small(550, 40);
 	pros::delay(800);
-	turn(135, r);
-	pressure(100, 20, 250);
+	turn(125, r);
+	small(-220, 40);
+	pros::delay(500);
+	pressure(300, 20, 150);
+	small(200, 40);
+	start_intake();
+	pros::delay(500);
+	turn(71.4, l, 0.3);
+	small(350, 40);
+	pros::delay(600);
+	shoot(3);
+	target_speed = 53;
+	turn(45, r, 0.5);
+	start_intake();
+	drive(710, 0.3, 1.1, 0.3);
+	turn(92, l);
+	pros::delay(400);
+	shoot(3);
+	target_speed = 57;
+	turn(91, r, 0.4);
+	drive(700, 0.1);
+	turn(130, l);
+	shoot(3);
+	turn(145, l);
+	drive(500, 0.1, 1.1, 0.1);
+	drive(-150);
+	turn(40, r);
+	shoot(3);
+	drive(-370);
+	pressure(300, 20, 350);
+	/*
+	pros::delay(200);
+	drive(500);
+	shoot(3);
+	*/
+	/*
 	small(100, 30);
 	turn(80, l);
 	pros::delay(200);
@@ -126,8 +153,12 @@ void skills(void) {
 	drive(300);
 	expand();
 	drive(-300);
+	*/
 }
 
 void flywheel_test(void) {
-	turn(90, l);
-}
+	swing_turn(45, l);
+	swing_turn(45, r);
+	swing_turn(45, r);
+	swing_turn(45, l);
+}	

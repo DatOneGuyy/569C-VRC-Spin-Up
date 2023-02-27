@@ -53,9 +53,6 @@
 #include "driver/pneumatics.hpp"
 #include "driver/drive.hpp"
 
-#include "selector/button.hpp"
-#include "selector/display.hpp"
-
 #include "functions.hpp"
 
 extern bool driving;
@@ -72,7 +69,6 @@ extern bool last_turn_direction;
 extern bool r;
 extern bool l;
 
-extern bool selected;
 extern int program;
 
 extern double intake_voltage;

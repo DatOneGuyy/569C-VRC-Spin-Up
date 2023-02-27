@@ -22,7 +22,7 @@ void drive_task(void*) {
 			.withDimensions({AbstractMotor::gearset::blue, (60.0 / 84.0)}, {{4.125_in, 16_in}, imev5BlueTPR})
 			.build();
 
-	drive->getModel()->setBrakeMode(AbstractMotor::brakeMode::hold);
+	drive->getModel()->setBrakeMode(AbstractMotor::brakeMode::coast);
 
 	while (true) {
 		left = controller.getAnalog(ControllerAnalog::leftY);

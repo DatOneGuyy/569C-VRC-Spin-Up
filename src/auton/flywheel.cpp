@@ -101,7 +101,7 @@ void flywheel_task(void*) {
 
 	int counter = 0;
 
-	while (true && !driving) {
+	while (!driving) {
 		shift();
 		speeds[smoothing - 1] = flywheel.getActualVelocity();
 

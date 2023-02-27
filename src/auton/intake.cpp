@@ -6,7 +6,7 @@ using namespace okapi;
 
 void pressure(double time, double speed, double pressure_time) {
 	MotorGroup left({3, -11, -10});
-	MotorGroup right({-2, 18, 4});
+	MotorGroup right({-5, 18, 4});
 	Motor intake(-9);
 
 	left.setEncoderUnits(AbstractMotor::encoderUnits::degrees);
@@ -22,13 +22,13 @@ void pressure(double time, double speed, double pressure_time) {
 	}
 
 	for (int i = 0; i < pressure_time / 10; i++) {
-		intake_voltage = -12000;
+		intake_voltage = 11999;
 		pros::delay(10);
 	}
 	
+	intake_voltage = 0;
 	left.moveVoltage(0);
 	right.moveVoltage(0);
-	intake_voltage = 0;
 }
 
 void start_intake(void) {
@@ -59,7 +59,7 @@ void intake_handler(void*) {
 	while (true) {
 		if (!R2.isPressed()) {
 			intake.moveVoltage(intake_voltage);
-			if (fabs(intake.getActualVelocity()) < speed && fabs(intake_voltage) > 5000 && !changing)  {
+			if (fabs(intake.getActualVelocity()) < speed && fabs(intake_voltage) > 5000 && !changing && intake_voltage != 11999)  {
 				intake.moveVoltage(-12000);
 				pros::delay(200);
 				intake.moveVoltage(intake_voltage);

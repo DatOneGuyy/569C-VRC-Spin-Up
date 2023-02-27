@@ -23,7 +23,6 @@ double speed = 20;
 bool r = true;
 bool l = false;
 
-bool selected;
 int program;
 
 bool flywheel_idle;
@@ -37,12 +36,15 @@ bool angled_up = false;
  */
 void initialize(void) {
 	pros::Task run_intake_handler(intake_handler);
+	//pros::Task grapher_task(grapher);
+
 	IMU inertial(16, IMUAxes::z);
 	IMU inertial2(12, IMUAxes::z);
 	IMU inertial3(19, IMUAxes::z);
 	inertial.calibrate();
 	inertial2.calibrate();
 	inertial3.calibrate();
+
 	while (inertial.isCalibrating() || inertial2.isCalibrating() || inertial3.isCalibrating()) {
 		pros::delay(200);
 	}
@@ -78,14 +80,11 @@ void competition_initialize(void) {}
  * from where it left off.
  */
 void autonomous(void) {
-	program = 4;
+	program = 7;
 
 	bool driving = false;
 
-	//clear_screen();
-
 	pros::Task flywheel_auton(flywheel_task);
-	//pros::Task grapher_task(grapher);
 
 	if (program == 0 || program == 1) {
 		right_auton();
@@ -116,6 +115,7 @@ void autonomous(void) {
  */
 void opcontrol(void) {
 	driving = true;
+
 	pros::Task grapher_task(grapher);
 	pros::Task run_indexer(indexer_task);
 	pros::Task run_intake(intake_task);

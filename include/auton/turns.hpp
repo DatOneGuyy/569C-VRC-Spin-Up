@@ -16,7 +16,19 @@ void turn(double angle,
           double threshold = 0.8,
           double timeout = 5000,
           int threshold_time = 100);
-void swing_right(double distance, double speed = 60);
-void swing_left(double distance, double speed = 60);
-void swing_right_inertial(double distance, double speed = 60);
-void swing_left_inertial(double distance, double speed = 60);
+void swing_right_inertial(double angle,
+                double slew_rate = 0.6,
+                double threshold = 2,
+                double timeout = 3000,
+                int threshold_time = 200);
+void swing_left_inertial(double angle,
+               double slew_rate = 0.6,
+               double threshold = 2,
+               double timeout = 3000,
+               int threshold_time = 200);
+void swing_turn(double angle,
+                bool direction,
+                double slew_rate = 0.9,
+                double treshold = 0.8,
+                double timeout = 5000,
+                int threshold_time = 100);
