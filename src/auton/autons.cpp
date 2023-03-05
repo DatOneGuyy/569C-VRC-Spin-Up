@@ -52,49 +52,71 @@ void left_auton(void) { //roller start
 }
 
 void skills(void) {
-	target_speed = 58;
-	pressure(100, 20, 220);
-	small(100, 30);
+	target_speed = 59;
+	pressure(300, 20, 220);
 	start_intake();
-	swing_right_inertial(45, 80);
-	small(550, 40);
-	pros::delay(800);
-	turn(125, r);
-	small(-220, 40);
-	pros::delay(500);
-	pressure(300, 20, 150);
-	small(200, 40);
+	swing_right_inertial(45, 0.4);
+	pros::delay(200);
+	//drive(200);
+	drive(270, 0.01, 2);
+	pros::delay(200);
+	turn(135, r, 0.4);
+	stop_intake();
+	//drive(-100);
+	drive(-80);
+	pros::delay(200);
+	pressure(50, 20, 350);
+	drive(60);
 	start_intake();
 	pros::delay(500);
-	turn(71.4, l, 0.3);
-	small(350, 40);
-	pros::delay(600);
+	turn(89, l);
 	shoot(3);
 	target_speed = 53;
-	turn(45, r, 0.5);
+	swing_left_inertial(45, 0.9);
 	start_intake();
-	drive(710, 0.3, 1.1, 0.3);
-	turn(92, l);
+	drive(750);
+	turn(90, l, 0.2);
 	pros::delay(400);
+	shoot(2);
+	pros::delay(300);
+	shoot(1);
+	target_speed = 59;
+	turn(88, r, 0.2);
+	drive(820, 0.01);
+	turn(135, l);
+	shoot(2);
+	pros::delay(300);
+	shoot(1);
+	stop_intake();
+	drive(-50);
+	turn(90, l);
+	drive(-70);
+	pressure(100, 10, 350);
+	drive(50);
+	start_intake();
+	drive(400, 0.02);
+	turn(20, l);
+	pros::delay(500);
 	shoot(3);
-	target_speed = 57;
-	turn(91, r, 0.4);
-	drive(700, 0.1);
-	turn(130, l);
+	drive(-50);
+	turn(110, r);
+	drive(-300);
+	pressure(200, 10, 350);
+	drive(70);
+	start_intake();
+	turn(43, l);
+	drive(800);
+	turn(90, l);
+	shoot(3);
+	turn(92, r);
+	drive(750, 0.01);
+	turn(145, l);
 	shoot(3);
 	turn(145, l);
-	drive(500, 0.1, 1.1, 0.1);
-	drive(-150);
-	turn(40, r);
-	shoot(3);
-	drive(-370);
-	pressure(300, 20, 350);
-	/*
+		/*
 	pros::delay(200);
 	drive(500);
 	shoot(3);
-	*/
-	/*
 	small(100, 30);
 	turn(80, l);
 	pros::delay(200);
@@ -157,8 +179,10 @@ void skills(void) {
 }
 
 void flywheel_test(void) {
-	swing_turn(45, l);
-	swing_turn(45, r);
-	swing_turn(45, r);
-	swing_turn(45, l);
+	for (int i = 0; i < 4; i++) {
+		swing_turn(90, r);
+	}
+	for (int i = 0; i < 4; i++) {
+		swing_turn(90, l);
+	}
 }	

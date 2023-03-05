@@ -9,27 +9,33 @@ void pressure(double time, double speed, double pressure_time) {
 	MotorGroup right({-5, 18, 4});
 	Motor intake(-9);
 
+	IMU inertial(16, IMUAxes::z);
+	IMU inertial2(12, IMUAxes::z);
+	IMU inertial3(19, IMUAxes::z);
+	inertial.reset(0);
+	inertial2.reset(0);
+	inertial3.reset(0);
+
 	left.setEncoderUnits(AbstractMotor::encoderUnits::degrees);
 	right.setEncoderUnits(AbstractMotor::encoderUnits::degrees);
 
 	left.setBrakeMode(AbstractMotor::brakeMode::coast);
 	right.setBrakeMode(AbstractMotor::brakeMode::coast);
 
-	for (int i = 0; i < time / 10; i++) {
-		left.moveVoltage(-speed * 120);
-		right.moveVoltage(-speed * 120);
-		pros::delay(10);
-	}
+	left.moveVoltage(-speed * 120);
+	right.moveVoltage(-speed * 120);
+	pros::delay(time);
 
-	for (int i = 0; i < pressure_time / 10; i++) {
-		changing = true;
-		intake_voltage = 11999;
-		pros::delay(10);
-	}
+	changing = true;
+	intake_voltage = 11999;
+	pros::delay(pressure_time);
 	
 	intake_voltage = 0;
 	left.moveVoltage(0);
 	right.moveVoltage(0);
+
+	last_turn_direction = r;
+	angle_error = (inertial.get() + inertial2.get() + inertial3.get()) / 3;
 }
 
 void start_intake(void) {

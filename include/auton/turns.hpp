@@ -29,6 +29,6 @@ void swing_left_inertial(double angle,
 void swing_turn(double angle,
                 bool direction,
                 double slew_rate = 0.9,
-                double treshold = 0.8,
+                double threshold = 0.8,
                 double timeout = 5000,
                 int threshold_time = 100);

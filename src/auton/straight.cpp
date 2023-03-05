@@ -11,8 +11,8 @@ void forward(double distance, double slew_rate, double threshold, double timeout
 
 	left.setEncoderUnits(AbstractMotor::encoderUnits::degrees);
 	right.setEncoderUnits(AbstractMotor::encoderUnits::degrees);
-	left.setBrakeMode(AbstractMotor::brakeMode::coast);
-	right.setBrakeMode(AbstractMotor::brakeMode::coast);
+	left.setBrakeMode(AbstractMotor::brakeMode::hold);
+	right.setBrakeMode(AbstractMotor::brakeMode::hold);
 	left.tarePosition();
 	right.tarePosition();
 
@@ -25,10 +25,11 @@ void forward(double distance, double slew_rate, double threshold, double timeout
 
 	double error = distance * 150 / 151;
 	double position = avg(fabs(left.getPosition()), fabs(right.getPosition()));
-	double power = 0;
+	double power_right = 0;
+	double power_left = 0;
 	double kp = fmin(1.0, 200.0 / distance);
 	double kd = 3.3;
-	double kg = 4.0;
+	double kg = 10.0;
 	double angle = 0;
 	double past_error = error;
 
@@ -40,17 +41,22 @@ void forward(double distance, double slew_rate, double threshold, double timeout
 		position = avg(fabs(left.getPosition()), fabs(right.getPosition()));
 		error = distance * 150 / 151 - position;
 		angle = (inertial.get() + inertial2.get() + inertial3.get()) / 3;
-		power = kp * error;
-		power = (error > 10) ? power - angle * kg : power;
-		power = power + kd * (error - past_error);
-		power = c(-100, 100, power);
-		power = slew(slew_rate, slew_count, power, 35);
+		power_left = kp * error;
+		power_right = kp * error;
+		power_right = (error > 100) ? power_right + angle * kg : power_right;
+		power_left = (error > 100) ? power_left - angle * kg : power_left;
+		power_left = power_left + kd * (error - past_error);
+		power_right = power_right + kd * (error - past_error);
+		power_left = c(-100, 100, power_left);
+		power_right = c(-100, 100, power_right);
+		power_left = slew(slew_rate, slew_count, power_left, 35);
+		power_right = slew(slew_rate, slew_count, power_right, 35);
 
-		left.moveVoltage(power * 120);
-		right.moveVoltage(power * 120);
+		left.moveVoltage(power_left * 120);
+		right.moveVoltage(power_right * 120);
 		slew_count++;
 
-		if (fabs(error - past_error) < 0.1 && fabs(error) < fabs(distance) / 2) {
+		if (fabs(error - past_error) < 2 && fabs(error) < fabs(distance) / 5) {
 			threshold_count++;
 		} else {
 			threshold_count = 0;
@@ -59,14 +65,13 @@ void forward(double distance, double slew_rate, double threshold, double timeout
 		pros::screen::print(pros::E_TEXT_MEDIUM, 0, "Position: %f", position);
 		pros::screen::print(pros::E_TEXT_MEDIUM, 1, "Error: %f", error);
 		pros::screen::print(pros::E_TEXT_MEDIUM, 2, "Threshold count: %d", threshold_count);
-		pros::screen::print(pros::E_TEXT_MEDIUM, 3, "Power: %f", power);
-		pros::screen::print(pros::E_TEXT_MEDIUM, 4, "Angle: %f", angle);
-
-		std::cout << "Error: " << error << "Power: " << power << "Kp * error: " << kp * error << std::endl;
 
 		past_error = error;
 		pros::delay(step);
 	}
+
+	last_turn_direction = r;
+	angle_error = angle;
 
 	left.moveVelocity(0);
 	right.moveVelocity(0);
@@ -78,8 +83,8 @@ void backward(double distance, double slew_rate, double threshold, double timeou
 
 	left.setEncoderUnits(AbstractMotor::encoderUnits::degrees);
 	right.setEncoderUnits(AbstractMotor::encoderUnits::degrees);
-	left.setBrakeMode(AbstractMotor::brakeMode::coast);
-	right.setBrakeMode(AbstractMotor::brakeMode::coast);
+	left.setBrakeMode(AbstractMotor::brakeMode::hold);
+	right.setBrakeMode(AbstractMotor::brakeMode::hold);
 	left.tarePosition();
 	right.tarePosition();
 
@@ -92,10 +97,11 @@ void backward(double distance, double slew_rate, double threshold, double timeou
 
 	double error = distance * 150 / 151;
 	double position = avg(fabs(left.getPosition()), fabs(right.getPosition()));
-	double power = 0;
-	double kp = fmin(1.0, 300.0 / distance);
+	double power_right = 0;
+	double power_left = 0;
+	double kp = fmin(1.0, 200.0 / distance);
 	double kd = 3.3;
-	double kg = 4.0;
+	double kg = 10.0;
 	double angle = 0;
 	double past_error = error;
 
@@ -107,17 +113,22 @@ void backward(double distance, double slew_rate, double threshold, double timeou
 		position = avg(fabs(left.getPosition()), fabs(right.getPosition()));
 		error = distance * 150 / 151 - position;
 		angle = (inertial.get() + inertial2.get() + inertial3.get()) / 3;
-		power = kp * error;
-		power = (error > 10) ? power - angle * kg : power;
-		power = power + kd * (error - past_error);
-		power = c(-100, 100, power);
-		power = slew(slew_rate, slew_count, power, 35);
+		power_left = kp * error;
+		power_right = kp * error;
+		power_right = (error > 100) ? power_right + angle * kg : power_right;
+		power_left = (error > 100) ? power_left - angle * kg : power_left;
+		power_left = power_left + kd * (error - past_error);
+		power_right = power_right + kd * (error - past_error);
+		power_left = c(-100, 100, power_left);
+		power_right = c(-100, 100, power_right);
+		power_left = slew(slew_rate, slew_count, power_left, 35);
+		power_right = slew(slew_rate, slew_count, power_right, 35);
 
-		left.moveVoltage(-power * 120);
-		right.moveVoltage(-power * 120);
+		left.moveVoltage(power_left * -120);
+		right.moveVoltage(power_right * -120);
 		slew_count++;
 
-		if (fabs(error - past_error) < 0.1 && fabs(error) < fabs(distance) / 2) {
+		if (fabs(error - past_error) < 2 && fabs(error) < fabs(distance) / 5) {
 			threshold_count++;
 		} else {
 			threshold_count = 0;
@@ -126,11 +137,13 @@ void backward(double distance, double slew_rate, double threshold, double timeou
 		pros::screen::print(pros::E_TEXT_MEDIUM, 0, "Position: %f", position);
 		pros::screen::print(pros::E_TEXT_MEDIUM, 1, "Error: %f", error);
 		pros::screen::print(pros::E_TEXT_MEDIUM, 2, "Threshold count: %d", threshold_count);
-		pros::screen::print(pros::E_TEXT_MEDIUM, 3, "Power: %f", power);
 
 		past_error = error;
 		pros::delay(step);
 	}
+
+	last_turn_direction = r;
+	angle_error = angle;
 
 	left.moveVelocity(0);
 	right.moveVelocity(0);

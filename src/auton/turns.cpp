@@ -11,8 +11,8 @@ void turn_right(double angle, double slew_rate, double threshold, double timeout
 
 	left.setEncoderUnits(AbstractMotor::encoderUnits::degrees);
 	right.setEncoderUnits(AbstractMotor::encoderUnits::degrees);
-	left.setBrakeMode(AbstractMotor::brakeMode::coast);
-	right.setBrakeMode(AbstractMotor::brakeMode::coast);
+	left.setBrakeMode(AbstractMotor::brakeMode::hold);
+	right.setBrakeMode(AbstractMotor::brakeMode::hold);
 	left.tarePosition();
 	right.tarePosition();
 
@@ -36,7 +36,7 @@ void turn_right(double angle, double slew_rate, double threshold, double timeout
 	double error = target;
 	double position = (inertial.get() + inertial2.get() + inertial3.get()) / 3;
 	double power = 0;
-	double kp = 4.8;
+	double kp = 3.7;
 
 	double past_error = 0;
 	double kd = 14;
@@ -56,7 +56,7 @@ void turn_right(double angle, double slew_rate, double threshold, double timeout
 		left.moveVoltage(120 * power);
 		right.moveVoltage(-120 * power);
 
-		if (fabs(error) < threshold || fabs(error - past_error) < 0.1) {
+		if (fabs(error) < threshold || fabs(error - past_error) < 0.01) {
 			threshold_count++;
 		} else {
 			threshold_count = 0;
@@ -95,8 +95,8 @@ void turn_left(double angle, double slew_rate, double threshold, double timeout,
 
 	left.setEncoderUnits(AbstractMotor::encoderUnits::degrees);
 	right.setEncoderUnits(AbstractMotor::encoderUnits::degrees);
-	left.setBrakeMode(AbstractMotor::brakeMode::coast);
-	right.setBrakeMode(AbstractMotor::brakeMode::coast);
+	left.setBrakeMode(AbstractMotor::brakeMode::hold);
+	right.setBrakeMode(AbstractMotor::brakeMode::hold);
 	left.tarePosition();
 	right.tarePosition();
 
@@ -120,7 +120,7 @@ void turn_left(double angle, double slew_rate, double threshold, double timeout,
 	double error = target;
 	double position = (inertial.get() + inertial2.get() + inertial3.get()) / 3;
 	double power = 0;
-	double kp = 4.8;
+	double kp = 3.7;
 
 	double past_error = 0;
 	double kd = 14;
@@ -140,7 +140,7 @@ void turn_left(double angle, double slew_rate, double threshold, double timeout,
 		left.moveVoltage(-120 * power);
 		right.moveVoltage(120 * power);
 
-		if (fabs(error) < threshold || fabs(error - past_error) < 0.1) {
+		if (fabs(error) < threshold || fabs(error - past_error) < 0.01) {
 			threshold_count++;
 		} else {
 			threshold_count = 0;
@@ -179,7 +179,7 @@ void swing_right_inertial(double angle, double slew_rate, double threshold, doub
 	MotorGroup right({-5, 18, 4});
 
 	right.setEncoderUnits(AbstractMotor::encoderUnits::degrees);
-	right.setBrakeMode(AbstractMotor::brakeMode::coast);
+	right.setBrakeMode(AbstractMotor::brakeMode::hold);
 	right.tarePosition();
 
 	IMU inertial(16, IMUAxes::z);
@@ -193,9 +193,9 @@ void swing_right_inertial(double angle, double slew_rate, double threshold, doub
 
 	if (angle_error != 0) {
 		if (last_turn_direction == r) {
-			target += angle_error;
-		} else {
 			target -= angle_error;
+		} else {
+			target += angle_error;
 		}
 	}
 
@@ -251,7 +251,7 @@ void swing_left_inertial(double angle, double slew_rate, double threshold, doubl
 	MotorGroup left({3, -11, -10});
 
 	left.setEncoderUnits(AbstractMotor::encoderUnits::degrees);
-	left.setBrakeMode(AbstractMotor::brakeMode::coast);
+	left.setBrakeMode(AbstractMotor::brakeMode::hold);
 	left.tarePosition();
 
 	IMU inertial(16, IMUAxes::z);

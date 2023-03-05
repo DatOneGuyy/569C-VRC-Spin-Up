@@ -18,11 +18,11 @@ void drive_task(void*) {
 
 	std::shared_ptr<ChassisController> drive =
 		ChassisControllerBuilder()
-			.withMotors({3, -11, -10}, {-1, 18, 4})
+			.withMotors({3, -11, -10}, {-5, 18, 4})
 			.withDimensions({AbstractMotor::gearset::blue, (60.0 / 84.0)}, {{4.125_in, 16_in}, imev5BlueTPR})
 			.build();
 
-	drive->getModel()->setBrakeMode(AbstractMotor::brakeMode::coast);
+	drive->getModel()->setBrakeMode(AbstractMotor::brakeMode::brake);
 
 	while (true) {
 		left = controller.getAnalog(ControllerAnalog::leftY);
