@@ -56,7 +56,7 @@ void turn_right(double angle, double slew_rate, double threshold, double timeout
 		left.moveVoltage(120 * power);
 		right.moveVoltage(-120 * power);
 
-		if (fabs(error) < threshold || fabs(error - past_error) < 0.01) {
+		if (fabs(error) < threshold || fabs(error - past_error) < 0.1) {
 			threshold_count++;
 		} else {
 			threshold_count = 0;
@@ -140,7 +140,7 @@ void turn_left(double angle, double slew_rate, double threshold, double timeout,
 		left.moveVoltage(-120 * power);
 		right.moveVoltage(120 * power);
 
-		if (fabs(error) < threshold || fabs(error - past_error) < 0.01) {
+		if (fabs(error) < threshold || fabs(error - past_error) < 0.1) {
 			threshold_count++;
 		} else {
 			threshold_count = 0;
@@ -202,7 +202,7 @@ void swing_right_inertial(double angle, double slew_rate, double threshold, doub
 	double error = target;
 	double position = (inertial.get() + inertial2.get() + inertial3.get()) / 3;
 	double power = 0;
-	double kp = 4.8;
+	double kp = 5.2;
 
 	double past_error = 0;
 	double kd = 14;
@@ -274,7 +274,7 @@ void swing_left_inertial(double angle, double slew_rate, double threshold, doubl
 	double error = target;
 	double position = (inertial.get() + inertial2.get() + inertial3.get()) / 3;
 	double power = 0;
-	double kp = 4.8;
+	double kp = 5.2;
 
 	double past_error = 0;
 	double kd = 14;

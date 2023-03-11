@@ -80,7 +80,7 @@ void competition_initialize(void) {}
  * from where it left off.
  */
 void autonomous(void) {
-	program = 7;
+	program = 0;
 
 	bool driving = false;
 

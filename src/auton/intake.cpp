@@ -38,6 +38,40 @@ void pressure(double time, double speed, double pressure_time) {
 	angle_error = (inertial.get() + inertial2.get() + inertial3.get()) / 3;
 }
 
+void pressure_rev(double time, double speed, double pressure_time) {
+	MotorGroup left({3, -11, -10});
+	MotorGroup right({-5, 18, 4});
+	Motor intake(-9);
+
+	IMU inertial(16, IMUAxes::z);
+	IMU inertial2(12, IMUAxes::z);
+	IMU inertial3(19, IMUAxes::z);
+	inertial.reset(0);
+	inertial2.reset(0);
+	inertial3.reset(0);
+
+	left.setEncoderUnits(AbstractMotor::encoderUnits::degrees);
+	right.setEncoderUnits(AbstractMotor::encoderUnits::degrees);
+
+	left.setBrakeMode(AbstractMotor::brakeMode::coast);
+	right.setBrakeMode(AbstractMotor::brakeMode::coast);
+
+	left.moveVoltage(-speed * 120);
+	right.moveVoltage(-speed * 120);
+	pros::delay(time);
+
+	changing = true;
+	intake_voltage = -11999;
+	pros::delay(pressure_time);
+	
+	intake_voltage = 0;
+	left.moveVoltage(0);
+	right.moveVoltage(0);
+
+	last_turn_direction = r;
+	angle_error = (inertial.get() + inertial2.get() + inertial3.get()) / 3;
+}
+
 void start_intake(void) {
 	changing = true;
 	intake_voltage = 12000;
@@ -68,7 +102,7 @@ void intake_handler(void*) {
 	while (true) {
 		if (!R2.isPressed()) {
 			intake.moveVoltage(intake_voltage);
-			if (fabs(intake.getActualVelocity()) < speed && fabs(intake_voltage) > 5000 && !changing && intake_voltage != 11999)  {
+			if (fabs(intake.getActualVelocity()) < speed && fabs(intake_voltage) > 5000 && !changing && intake_voltage != 11999 && intake_voltage != -11999)  {
 				intake.moveVoltage(-12000);
 				pros::delay(200);
 				intake.moveVoltage(intake_voltage);

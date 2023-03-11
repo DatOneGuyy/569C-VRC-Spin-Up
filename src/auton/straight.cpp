@@ -5,7 +5,7 @@
 
 using namespace okapi;
 
-void forward(double distance, double slew_rate, double threshold, double timeout, int threshold_time) {
+void forward(double distance, double slew_rate, double threshold, double kg, double timeout, int threshold_time) {
 	MotorGroup left({3, -11, -10});
 	MotorGroup right({-5, 18, 4});
 
@@ -28,8 +28,7 @@ void forward(double distance, double slew_rate, double threshold, double timeout
 	double power_right = 0;
 	double power_left = 0;
 	double kp = fmin(1.0, 200.0 / distance);
-	double kd = 3.3;
-	double kg = 10.0;
+	double kd = 4.2;
 	double angle = 0;
 	double past_error = error;
 
@@ -77,7 +76,7 @@ void forward(double distance, double slew_rate, double threshold, double timeout
 	right.moveVelocity(0);
 }
 
-void backward(double distance, double slew_rate, double threshold, double timeout, int threshold_time) {
+void backward(double distance, double slew_rate, double threshold, double kg, double timeout, int threshold_time) {
 	MotorGroup left({3, -11, -10});
 	MotorGroup right({-5, 18, 4});
 
@@ -100,8 +99,7 @@ void backward(double distance, double slew_rate, double threshold, double timeou
 	double power_right = 0;
 	double power_left = 0;
 	double kp = fmin(1.0, 200.0 / distance);
-	double kd = 3.3;
-	double kg = 10.0;
+	double kd = 4.2;
 	double angle = 0;
 	double past_error = error;
 
@@ -149,11 +147,11 @@ void backward(double distance, double slew_rate, double threshold, double timeou
 	right.moveVelocity(0);
 }
 
-void drive(double distance,double slew_rate, double threshold, double timeout, int threshold_time) {
+void drive(double distance,double slew_rate, double threshold, double kg, double timeout, int threshold_time) {
 	if (distance > 0) {
-		forward(distance, slew_rate, threshold, timeout, threshold_time);
+		forward(distance, slew_rate, threshold, kg, timeout, threshold_time);
 	} else {
-		backward(-distance, slew_rate, threshold, timeout, threshold_time);
+		backward(-distance, slew_rate, threshold, kg, timeout, threshold_time);
 	}
 }
 
@@ -164,3 +162,23 @@ void small(double distance, double speed) {
 	left.moveRelative(distance, speed);
 	right.moveRelative(distance, speed);
 } 
+
+void distance_reverse(double distance, double speed) {
+	MotorGroup left({3, -11, -10});
+	MotorGroup right({-5, 18, 4});
+	DistanceSensor distance_sensor(20);
+	int counter = 0;
+	
+	while (counter < 5) {
+		left.moveVelocity(-speed);
+		right.moveVelocity(-speed);
+		if (distance_sensor.get() < distance) {
+			counter++;
+		}
+		pros::screen::print(pros::E_TEXT_MEDIUM, 6, "%f", distance_sensor.get());
+		pros::delay(10);
+	}
+
+	left.moveVelocity(0);
+	right.moveVelocity(0);
+}
