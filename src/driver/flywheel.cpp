@@ -6,7 +6,7 @@ using namespace okapi;
 
 void indexer_task(void*) {
 	ControllerButton L1(ControllerDigital::L1);
-	ControllerButton UP(ControllerDigital::up);
+	ControllerButton L2(ControllerDigital::L2);
 	ControllerButton A(ControllerDigital::A);
 
 	Controller controller;
@@ -54,7 +54,7 @@ void indexer_task(void*) {
 				flywheel_idle = true;
 			}
 
-			if (UP.changedToPressed()) {
+			if (L2.changedToPressed()) {
 				indexer.set_value(true);
 				pros::delay(1000 / rate * 0.3);
 

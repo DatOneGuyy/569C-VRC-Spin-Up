@@ -41,12 +41,12 @@ void catapults_task(void*) {
 }
 
 void angle_changer_task(void*) {
-	ControllerButton L2(ControllerDigital::L2);
+	ControllerButton UP(ControllerDigital::up);
 	pros::ADIPort angle_changer('E', pros::E_ADI_DIGITAL_OUT);
 	angled_up = false;
 
 	while (driving) {
-		if (L2.changedToPressed()) {
+		if (UP.changedToPressed()) {
 			angled_up = !angled_up;
 			angle_changer.set_value(angled_up);
 		}

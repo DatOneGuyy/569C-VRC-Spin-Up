@@ -28,6 +28,51 @@ int program;
 bool flywheel_idle;
 bool angled_up = false;
 
+double final_speed = 0;
+
+pros::Motor left1(3);
+pros::Motor left2(11);
+pros::Motor left3(10);
+pros::Motor right1(-5);
+pros::Motor right2(-18);
+pros::Motor right3(-4);
+
+pros::MotorGroup left_drive({left1, left2, left3});
+pros::MotorGroup right_drive({right1, right2, right3});
+
+lemlib::Drivetrain_t drivetrain {
+	&left_drive,
+	&right_drive,
+	14.5,
+	2.75,
+	600
+};
+
+pros::ADIEncoder left_tracker('A', 'B', true);
+pros::ADIEncoder right_tracker('C', 'D', false);
+pros::ADIEncoder back_tracker('E', 'F', false);
+pros::IMU inertial_p(16);
+
+lemlib::TrackingWheel left_tracking_wheel(&left_tracker, 2.75, -6.0);
+lemlib::TrackingWheel right_tracking_wheel(&right_tracker, 2.75, 6.0);
+lemlib::TrackingWheel back_tracking_wheel(&back_tracker, 2.75, 4.5);
+
+lemlib::OdomSensors_t sensors {
+	&left_tracking_wheel,
+	&right_tracking_wheel,
+	&back_tracking_wheel,
+	nullptr,
+	&inertial_p
+};
+
+lemlib::ChassisController_t lateralController {8, 30, 1, 100, 3, 500, 5};
+lemlib::ChassisController_t angularController {4, 40, 1, 100, 3, 500, 40};
+
+lemlib::Chassis chassis_l(drivetrain, lateralController, angularController, sensors);
+
+std::shared_ptr<okapi::ChassisController> chassis = ChassisControllerBuilder().withMotors({3, -11, -10}, {-5, 18, 4}).build();
+    
+
 /**
  * Runs initialization code. This occurs as soon as the program is started.
  *
@@ -35,19 +80,20 @@ bool angled_up = false;
  * to keep execution time for this mode under a few seconds.
  */
 void initialize(void) {
-	pros::Task run_intake_handler(intake_handler);
-	//pros::Task grapher_task(grapher);
-
 	IMU inertial(16, IMUAxes::z);
 	IMU inertial2(12, IMUAxes::z);
 	IMU inertial3(19, IMUAxes::z);
+
+	pros::Task run_intake_handler(intake_handler);
+	//pros::Task grapher_task(grapher);
+	/*
 	inertial.calibrate();
 	inertial2.calibrate();
 	inertial3.calibrate();
 
 	while (inertial.isCalibrating() || inertial2.isCalibrating() || inertial3.isCalibrating()) {
 		pros::delay(200);
-	}
+	}*/
 }
 
 /**
@@ -95,7 +141,6 @@ void autonomous(void) {
 	} else if (program == 5 || program == 6) {
 		//run bozo code here
 	} else if (program == 7) {
-		flywheel_test();
 	}
 	flywheel_auton.suspend();
 }
